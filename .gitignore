@@ -1,0 +1,6 @@
+.DS_Store
+.nova
+node_modules/
+coverage/
+dist/
+__tests__/fixtures-target

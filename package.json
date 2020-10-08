@@ -1,0 +1,53 @@
+{
+  "name": "@fec/remark-responsive-images",
+  "version": "1.0.0",
+  "description": "Remark plugin to generate responsive images.",
+  "main": "dist/remark-responsive-images.cjs.js",
+  "module": "dist/remark-responsive-images.esm.js",
+  "scripts": {
+    "test": "jest",
+    "build": "rollup -c",
+    "prepare": "npm run build"
+  },
+  "author": "Florian Eckerstofer <florian@eckerstorfer.net>",
+  "license": "MIT",
+  "keywords": [
+    "remark",
+    "responsive",
+    "images"
+  ],
+  "devDependencies": {
+    "@babel/preset-env": "^7.11.5",
+    "@rollup/plugin-json": "^4.1.0",
+    "cheerio": "^1.0.0-rc.3",
+    "jest": "^26.5.2",
+    "remark": "^12.0.1",
+    "remark-html": "^13.0.1",
+    "rollup": "^2.29.0"
+  },
+  "dependencies": {
+    "probe-image-size": "^5.0.0",
+    "sharp": "0.26.1",
+    "unist-util-visit-parents": "^3.1.0"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,ts}"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    },
+    "testRegex": "/__tests__/.*\\.spec\\.[jt]s$"
+  },
+  "engines": {
+    "node": ">=10.0"
+  },
+  "files": [
+    "dist"
+  ]
+}
