@@ -1,5 +1,5 @@
 const DEFAULT_OPTIONS = {
-  imgClassName: 'remarkri-img',
+  imgClassName: 'remarkri--img',
   figureClassName: 'remarkri--figure',
   figCaptionClassName: 'remarkri--figcaption',
   pictureClassName: 'remarkri--picture',
