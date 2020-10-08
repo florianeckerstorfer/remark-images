@@ -18,7 +18,10 @@ describe('remark-responsive-images', () => {
 
   beforeEach(() => {
     if (fs.existsSync(targetDir)) {
-      fs.rmdirSync(targetDir, { recursive: true });
+      fs.readdirSync(targetDir).forEach((file) =>
+        fs.unlinkSync(path.join(targetDir, file))
+      );
+      fs.rmdirSync(targetDir);
     }
   });
 
