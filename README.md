@@ -9,7 +9,8 @@ Made by 👨‍💻[Florian Eckerstorfer](https://florian.ec) in beautiful 🎡 
 1. [Installation](#installation)
 2. [Configuration](#configuration)
 3. [Contributing](#contributing)
-4. [License](#license)
+4. [Code of Conduct](#code-of-conduct)
+5. [License](#license)
 
 ## Installation
 
@@ -68,6 +69,10 @@ To contribute to `@fec/remark-responsive-images`, follow these steps:
 
 Alternatively see the GitHub documentation on [creating a pull request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request).
 
+## Code of Conduct
+
+This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md).
+
 ## License
 
-This project is licenses under the [MIT License](LICENSE.md).
+This project is licensed under the [MIT License](LICENSE.md).
