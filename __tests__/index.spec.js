@@ -7,15 +7,20 @@ import fs from 'fs';
 
 describe('remark-responsive-images', () => {
   const targetDir = path.join(__dirname, 'fixtures-target');
-  
-  const processor = remark().use(html).use([[plugin, {
+
+  const options = {
     srcDir: path.join(__dirname, 'fixtures'),
     targetDir: targetDir,
-  }]]);
+  };
+  const processor = remark()
+    .use(html)
+    .use([[plugin, options]]);
 
   beforeEach(() => {
-    fs.rmdirSync(targetDir, { recursive: true });
-  })
+    if (fs.existsSync(targetDir)) {
+      fs.rmdirSync(targetDir, { recursive: true });
+    }
+  });
 
   it('should return HTML for image', (done) => {
     const input = '![My image](foo.jpg)';
@@ -73,5 +78,5 @@ describe('remark-responsive-images', () => {
       expect(result('img').attr('alt')).toBe('My image');
       done();
     });
-  })
+  });
 });
