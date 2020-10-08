@@ -2,6 +2,8 @@
 
 > Plugin for [Remark](https://remark.js.org/) to make the images in your Markdown responsives.
 
+![Unit tests](https://github.com/florianeckerstorfer/remark-responsive-images/workflows/Test/badge.svg)
+
 Made by 👨‍💻[Florian Eckerstorfer](https://florian.ec) in beautiful 🎡 Vienna, Europe.
 
 ## Table of Contents
