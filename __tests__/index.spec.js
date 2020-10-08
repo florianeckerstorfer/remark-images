@@ -3,12 +3,19 @@ import remark from 'remark';
 import html from 'remark-html';
 import path from 'path';
 import cheerio from 'cheerio';
+import fs from 'fs';
 
 describe('remark-responsive-images', () => {
+  const targetDir = path.join(__dirname, 'fixtures-target');
+  
   const processor = remark().use(html).use([[plugin, {
     srcDir: path.join(__dirname, 'fixtures'),
-    targetDir: path.join(__dirname, 'fixtures-target'),
+    targetDir: targetDir,
   }]]);
+
+  beforeEach(() => {
+    fs.rmdirSync(targetDir, { recursive: true });
+  })
 
   it('should return HTML for image', (done) => {
     const input = '![My image](foo.jpg)';
