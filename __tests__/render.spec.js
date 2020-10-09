@@ -39,7 +39,33 @@ describe('renderImg()', () => {
     });
 
     expect(rendered).toBe(
-      '<img srcset="foo-320.jpg" src="foo-320.jpg" alt="My alt" class="foo">'
+      '<img srcset="foo-320.jpg" src="foo-320.jpg" alt="My alt" class="foo" loading="eager">'
+    );
+  });
+
+  it('should render img with loading policy', () => {
+    const rendered = renderImg({
+      className: 'foo',
+      alt: 'My alt',
+      srcSet: [{ srcSet: ['foo-320.jpg'] }],
+      loadingPolicy: 'lazy'
+    });
+
+    expect(rendered).toContain(
+      'loading="lazy"'
+    );
+  });
+
+  it('should render img with eager loading policy if value is invalid', () => {
+    const rendered = renderImg({
+      className: 'foo',
+      alt: 'My alt',
+      srcSet: [{ srcSet: ['foo-320.jpg'] }],
+      loadingPolicy: 'invalid'
+    });
+
+    expect(rendered).toContain(
+      'loading="eager"'
     );
   });
 

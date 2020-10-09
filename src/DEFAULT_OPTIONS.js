@@ -7,6 +7,7 @@ const DEFAULT_OPTIONS = {
   imageSizes: [320, 640, 960],
   srcDir: '.',
   targetDir: '.',
+  loadingPolicy: 'eager',
 };
 
 export default DEFAULT_OPTIONS;
