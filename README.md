@@ -83,6 +83,10 @@ This project is licensed under the [MIT License](LICENSE.md).
 
 ## Changelog
 
+### Version 0.1.2-alpha (October 9, 2020)
+
+- [#3](https://github.com/florianeckerstorfer/remark-responsive-images/pull/3) Add option to set loading attribute on image
+
 ### Version 0.1.1-alpha (October 9, 2020)
 
 - [#1](https://github.com/florianeckerstorfer/remark-responsive-images/pull/1) Only process .png, .jpg and .jpeg files
