@@ -16,7 +16,9 @@ function findMarkdownImageNodes(markdownAST) {
     (node, ancestors) => {
       const inLink = ancestors.some(findParentLinks);
 
-      markdownImageNodes.push({ node, inLink });
+      if (node.url.match(/\.(png|jpe?g)$/)) {
+        markdownImageNodes.push({ node, inLink });
+      }
     }
   );
 

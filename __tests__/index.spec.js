@@ -82,4 +82,17 @@ describe('remark-responsive-images', () => {
       done();
     });
   });
+
+  it('should not modify node if image gif', (done) => {
+    const input = '![My image](foo.gif)';
+
+    processor.process(input, (_, file) => {
+      const result = cheerio.load(String(file));
+      expect(result('figure').length).toBe(0);
+      expect(result('img').length).toBe(1);
+      expect(result('img').attr('src')).toBe('foo.gif');
+      expect(result('img').attr('alt')).toBe('My image');
+      done();
+    });
+  });
 });
