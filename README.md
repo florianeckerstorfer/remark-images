@@ -13,6 +13,7 @@ Made by 👨‍💻[Florian Eckerstorfer](https://florian.ec) in beautiful 🎡 
 3. [Contributing](#contributing)
 4. [Code of Conduct](#code-of-conduct)
 5. [License](#license)
+6. [Changelog](#changelog)
 
 ## Installation
 
@@ -78,3 +79,14 @@ This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.
 ## License
 
 This project is licensed under the [MIT License](LICENSE.md).
+
+## Changelog
+
+### Version 0.1.1-alpha (October 9, 2020)
+
+- [#1](https://github.com/florianeckerstorfer/remark-responsive-images/pull/1) Only process .png, .jpg and .jpeg files
+- [#2](https://github.com/florianeckerstorfer/remark-responsive-images/pull/2) Add remark as peer dependency
+
+### Version 0.1.0-alpha (October 9, 2020)
+
+- Initial alpha release
