@@ -8,16 +8,21 @@ export function renderPicture({ className, sources }) {
   return renderTag('picture', { class: className }, sources);
 }
 
-export function renderImg({ srcSet, alt, className }) {
+export function renderImg({ srcSet, alt, className, loadingPolicy }) {
   if (!srcSet || !srcSet[0] || !srcSet[0].srcSet || !srcSet[0].srcSet[0]) {
     return null;
   }
+
+  const loading = ['eager', 'lazy'].includes(loadingPolicy)
+    ? loadingPolicy
+    : 'eager';
 
   return renderTag('img', {
     srcset: srcSet.map((s) => s.srcSet.join(' ')).join(', '),
     src: srcSet[0].srcSet[0],
     alt: alt,
     class: className,
+    loading,
   });
 }
 
@@ -35,6 +40,7 @@ export function renderFigure({ node, sources, options }) {
     srcSet: srcSets.shift().srcSet,
     alt: node.alt,
     className: options.imgClassName,
+    loadingPolicy: options.loadingPolicy,
   });
 
   const sourceTags = srcSets
