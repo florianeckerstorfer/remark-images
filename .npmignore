@@ -3,3 +3,4 @@
 /.npmignore
 /.prettierrc
 *.log
+/examples

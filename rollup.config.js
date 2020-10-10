@@ -10,6 +10,7 @@ export default [
       'unist-util-visit-parents',
       'fs',
       'path',
+      'debug',
     ],
     output: [
       { file: pkg.main, format: 'cjs', exports: 'default' },
