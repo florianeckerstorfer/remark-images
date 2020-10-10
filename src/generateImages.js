@@ -1,8 +1,11 @@
+import createDebug from 'debug';
 import fs from 'fs';
 import path from 'path';
 import probeImageSize from 'probe-image-size';
 import sharp from 'sharp';
 import { fileExists, isNewerFile } from './fileHelpers';
+
+const debug = createDebug('RemarkResponsiveImages:generate');
 
 export function getHeightFromWidth(width, source) {
   return Math.ceil((width / source.width) * source.height);
@@ -11,12 +14,14 @@ export function getHeightFromWidth(width, source) {
 export async function generateImage({ sourceFile, targetFile, width, height }) {
   const targetDir = path.dirname(targetFile);
   if (!fileExists(targetDir)) {
+    debug('Directory "%s" does not exist, creating', targetDir);
     fs.mkdirSync(targetDir, { recursive: true });
   }
 
   const result = await sharp(sourceFile)
     .resize({ width, height })
     .toFile(targetFile);
+  debug('Generated image "%s"', targetFile);
   return result.size > 0;
 }
 
@@ -47,7 +52,16 @@ export async function generateImages({
 
   const queue = images
     .map(addDirToFiles)
-    .filter((image) => isNewerFile(image.sourceFile, image.targetFile))
+    .filter((image) => {
+      const isNewer = isNewerFile(image.sourceFile, image.targetFile);
+      debug(
+        '%s is %s than %s',
+        image.sourceFile,
+        isNewer ? 'newer' : 'older',
+        image.targetFile
+      );
+      return isNewer;
+    })
     .map((image) =>
       new Promise((resolve) => {
         probeImageSize(fs.createReadStream(image.sourceFile)).then((result) => {

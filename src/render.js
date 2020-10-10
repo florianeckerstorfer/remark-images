@@ -1,4 +1,7 @@
+import createDebug from 'debug';
 import renderTag from './renderTag';
+
+const debug = createDebug('RemarkResponsiveImages:render');
 
 export function renderCaption({ caption, className }) {
   return renderTag('figcaption', { class: className }, caption);
@@ -10,6 +13,7 @@ export function renderPicture({ className, sources }) {
 
 export function renderImg({ srcSet, alt, className, loadingPolicy }) {
   if (!srcSet || !srcSet[0] || !srcSet[0].srcSet || !srcSet[0].srcSet[0]) {
+    debug('Skip <img>, no srcset found %o', srcSet);
     return null;
   }
 
@@ -59,6 +63,9 @@ export function renderFigure({ node, sources, options }) {
         className: options.figCaptionClassName,
       })
     : undefined;
+  if (captionTag) {
+    debug('Render <figcaption> for node %o', node);
+  }
 
   return renderTag('figure', { class: options.figureClassName }, [
     pictureTag,

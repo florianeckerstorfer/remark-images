@@ -1,7 +1,10 @@
-import { getFileNameInfo } from './fileHelpers';
-import probeImageSize from 'probe-image-size';
-import path from 'path';
+import createDebug from 'debug';
 import fs from 'fs';
+import path from 'path';
+import probeImageSize from 'probe-image-size';
+import { getFileNameInfo } from './fileHelpers';
+
+const debug = createDebug('RemarkResponsiveImages:srcSet');
 
 export function getHeightFromWidth(width, source) {
   return Math.ceil((width / source.width) * source.height);
@@ -22,7 +25,14 @@ export async function getSrcSet({ srcDir, fileName, width, resolutions }) {
     }))
     .filter((img) => {
       const intrinsicHeight = getHeightFromWidth(img.intrinsicWidth, size);
-      return intrinsicHeight <= size.height && img.intrinsicWidth <= size.width;
+      const isSmaller =
+        intrinsicHeight <= size.height && img.intrinsicWidth <= size.width;
+      if (isSmaller) {
+        debug('Generated source "%s"', img.src);
+      } else {
+        debug('Skipping source "%s": too big', img.src);
+      }
+      return isSmaller;
     })
     .map((img) => ({
       ...img,
