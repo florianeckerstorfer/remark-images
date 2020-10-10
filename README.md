@@ -10,10 +10,11 @@ Made by 👨‍💻[Florian Eckerstorfer](https://florian.ec) in beautiful 🎡 
 
 1. [Installation](#installation)
 2. [Configuration](#configuration)
-3. [Contributing](#contributing)
-4. [Code of Conduct](#code-of-conduct)
-5. [License](#license)
-6. [Changelog](#changelog)
+3. [Debugging](#debugging)
+4. [Contributing](#contributing)
+5. [Code of Conduct](#code-of-conduct)
+6. [License](#license)
+7. [Changelog](#changelog)
 
 ## Installation
 
@@ -57,6 +58,14 @@ const processor = remark().use([[images, options]]);
 | `srcDir`              | `.`                    | Directory where to look for images       |
 | `targetDir`           | `.`                    | Directory where to save generated images |
 | `loadingPolicy`       | `eager`                | Sets the `loading` attribute on `<img>`, `lazy` to load images when they become visible |
+
+## Debugging
+
+`@fec/remark-responsive-images` uses [debug](https://www.npmjs.com/package/debug) to give you helpful debugging information when something does not work. In debug mode you get information about inspected nodes, skipped images and srcsets and generated images.
+
+```bash
+DEBUG=RemarkResponsiveImages node examples/remark-html.js
+```
 
 ## Contributing
 

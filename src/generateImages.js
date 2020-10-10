@@ -5,7 +5,7 @@ import probeImageSize from 'probe-image-size';
 import sharp from 'sharp';
 import { fileExists, isNewerFile } from './fileHelpers';
 
-const debug = createDebug('RemarkResponsiveImages:generate');
+const debug = createDebug('RemarkResponsiveImages');
 
 export function getHeightFromWidth(width, source) {
   return Math.ceil((width / source.width) * source.height);

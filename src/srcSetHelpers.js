@@ -4,7 +4,7 @@ import path from 'path';
 import probeImageSize from 'probe-image-size';
 import { getFileNameInfo } from './fileHelpers';
 
-const debug = createDebug('RemarkResponsiveImages:srcSet');
+const debug = createDebug('RemarkResponsiveImages');
 
 export function getHeightFromWidth(width, source) {
   return Math.ceil((width / source.width) * source.height);

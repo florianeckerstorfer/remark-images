@@ -1,7 +1,7 @@
 import createDebug from 'debug';
 import renderTag from './renderTag';
 
-const debug = createDebug('RemarkResponsiveImages:render');
+const debug = createDebug('RemarkResponsiveImages');
 
 export function renderCaption({ caption, className }) {
   return renderTag('figcaption', { class: className }, caption);
