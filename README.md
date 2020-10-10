@@ -92,6 +92,10 @@ This project is licensed under the [MIT License](LICENSE.md).
 
 ## Changelog
 
+### Version 0.1.3-alpha (October 10, 2020)
+
+- [#4](https://github.com/florianeckerstorfer/remark-responsive-images/pull/4) Add debug information
+
 ### Version 0.1.2-alpha (October 9, 2020)
 
 - [#3](https://github.com/florianeckerstorfer/remark-responsive-images/pull/3) Add option to set loading attribute on image
