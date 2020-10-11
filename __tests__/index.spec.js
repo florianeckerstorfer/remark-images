@@ -5,7 +5,7 @@ import path from 'path';
 import cheerio from 'cheerio';
 import fs from 'fs';
 
-describe('remark-responsive-images', () => {
+describe('remark-images', () => {
   const targetDir = path.join(__dirname, 'fixtures-target');
 
   const options = {

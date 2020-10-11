@@ -1,4 +1,4 @@
-const plugin = require('../dist/remark-responsive-images.cjs');
+const plugin = require('../dist/remark-images.cjs');
 const remark = require('remark');
 const html = require('remark-html');
 const path = require('path');
