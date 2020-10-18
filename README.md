@@ -93,6 +93,10 @@ This project is licensed under the [MIT License](LICENSE.md).
 
 ## Changelog
 
+### Version 0.3.0-alpha (October 18, 2020)
+
+- [#5](https://github.com/florianeckerstorfer/remark-images/pull/5) Wrap images in elastic container to avoid layout jumps
+
 ### Version 0.2.0-alpha (October 11, 2020)
 
 - Rename package to `@fec/remark-images`
