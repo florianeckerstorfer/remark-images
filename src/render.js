@@ -11,7 +11,7 @@ export function renderPicture({ className, sources }) {
   return renderTag('picture', { class: className }, sources);
 }
 
-export function renderImg({ srcSet, alt, className, loadingPolicy }) {
+export function renderImg({ srcSet, alt, className, loadingPolicy, style }) {
   if (!srcSet || !srcSet[0] || !srcSet[0].srcSet || !srcSet[0].srcSet[0]) {
     debug('Skip <img>, no srcset found %o', srcSet);
     return null;
@@ -27,6 +27,7 @@ export function renderImg({ srcSet, alt, className, loadingPolicy }) {
     alt: alt,
     class: className,
     loading,
+    style,
   });
 }
 
@@ -40,11 +41,26 @@ export function renderSource({ srcSet, width }) {
 export function renderFigure({ node, sources, options }) {
   const srcSets = [...sources];
 
+  const aspectRatio = srcSets[0].aspectRatio;
+
+  const imgTagStyle = options.elasticContainer
+    ? {
+        height: '100%',
+        left: 0,
+        margin: 0,
+        position: 'absolute',
+        top: 0,
+        'vertical-align': 'middle',
+        width: '100%',
+      }
+    : undefined;
+
   const imgTag = renderImg({
     srcSet: srcSets.shift().srcSet,
     alt: node.alt,
     className: options.imgClassName,
     loadingPolicy: options.loadingPolicy,
+    style: imgTagStyle,
   });
 
   const sourceTags = srcSets
@@ -57,6 +73,37 @@ export function renderFigure({ node, sources, options }) {
     sources: [...sourceTags, imgTag],
   });
 
+  const bgTag = options.elasticContainer
+    ? renderTag(
+        'span',
+        {
+          style: {
+            bottom: 0,
+            display: 'block',
+            left: 0,
+            'padding-bottom': `${(1 / aspectRatio) * 100}%`,
+            position: 'relative',
+          },
+        },
+        true
+      )
+    : undefined;
+
+  const imageWrapper = options.elasticContainer
+    ? renderTag(
+        'span',
+        {
+          style: {
+            display: 'block',
+            'margin-left': 'auto',
+            'margin-right': 'auto',
+            position: 'relative',
+          },
+        },
+        [bgTag, pictureTag]
+      )
+    : undefined;
+
   const captionTag = node.title
     ? renderCaption({
         caption: node.title,
@@ -68,7 +115,7 @@ export function renderFigure({ node, sources, options }) {
   }
 
   return renderTag('figure', { class: options.figureClassName }, [
-    pictureTag,
+    options.elasticContainer ? imageWrapper : pictureTag,
     captionTag,
   ]);
 }

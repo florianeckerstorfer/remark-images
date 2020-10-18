@@ -12,7 +12,8 @@ import srcSetFixture from './fixtures/srcSetFixture';
 
 jest.mock('../src/fileHelpers');
 
-const options = DEFAULT_OPTIONS;
+const noElasticOptions = { ...DEFAULT_OPTIONS, elasticContainer: false };
+const withElasticOptions = { ...DEFAULT_OPTIONS };
 
 describe('renderCaption()', () => {
   it('should render caption with className', () => {
@@ -48,12 +49,10 @@ describe('renderImg()', () => {
       className: 'foo',
       alt: 'My alt',
       srcSet: [{ srcSet: ['foo-320.jpg'] }],
-      loadingPolicy: 'lazy'
+      loadingPolicy: 'lazy',
     });
 
-    expect(rendered).toContain(
-      'loading="lazy"'
-    );
+    expect(rendered).toContain('loading="lazy"');
   });
 
   it('should render img with eager loading policy if value is invalid', () => {
@@ -61,12 +60,10 @@ describe('renderImg()', () => {
       className: 'foo',
       alt: 'My alt',
       srcSet: [{ srcSet: ['foo-320.jpg'] }],
-      loadingPolicy: 'invalid'
+      loadingPolicy: 'invalid',
     });
 
-    expect(rendered).toContain(
-      'loading="eager"'
-    );
+    expect(rendered).toContain('loading="eager"');
   });
 
   it('should return `null` if srcSet is empty', () => {
@@ -92,30 +89,32 @@ describe('renderSource()', () => {
 
 describe('renderFigure()', () => {
   const existsMock = jest.spyOn(FileHelpers, 'fileExists');
-  const getFileNameInfo = jest
-    .spyOn(FileHelpers, 'getFileNameInfo')
-    .mockReturnValue(['foo', 'jpg']);
+  jest.spyOn(FileHelpers, 'getFileNameInfo').mockReturnValue(['foo', 'jpg']);
 
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should image with alt', () => {
+  it('should render image with alt if `elasticContainer` is off', () => {
     existsMock.mockReturnValue(true);
 
     const node = { type: 'image', alt: 'my alt', url: 'img.jpg' };
 
-    const rendered = renderFigure({ node, sources: srcSetFixture, options });
+    const rendered = renderFigure({
+      node,
+      sources: srcSetFixture,
+      options: noElasticOptions,
+    });
 
     const $ = cheerio.load(rendered);
 
     expect($('figure').html().length).toBeGreaterThan(0);
-    expect($('figure').attr('class')).toBe(options.figureClassName);
+    expect($('figure').attr('class')).toBe(noElasticOptions.figureClassName);
 
     expect($('picture').html().length).toBeGreaterThan(0);
-    expect($('picture').attr('class')).toBe(options.pictureClassName);
+    expect($('picture').attr('class')).toBe(noElasticOptions.pictureClassName);
 
-    expect($('img').attr('class')).toBe(options.imgClassName);
+    expect($('img').attr('class')).toBe(noElasticOptions.imgClassName);
     expect($('img').attr('alt')).toBe('my alt');
     expect($('img').attr('src')).toBe('foo-320.jpg');
     expect($('img').attr('srcset')).toBe(
@@ -133,6 +132,27 @@ describe('renderFigure()', () => {
     );
   });
 
+  it('should render image with elastic container', () => {
+    existsMock.mockReturnValue(true);
+
+    const node = { type: 'image', alt: 'my alt', url: 'img.jpg' };
+
+    const rendered = renderFigure({
+      node,
+      sources: srcSetFixture,
+      options: withElasticOptions,
+    });
+
+    const $ = cheerio.load(rendered);
+
+    expect($('figure > span').attr('style')).toContain('relative');
+    expect($('figure > span > span').attr('style')).toContain('relative');
+    expect($('figure > span > span').attr('style')).toContain(
+      'padding-bottom: 149.9999999925%'
+    );
+    expect($('img').attr('style')).toContain('absolute');
+  });
+
   it('should render image with caption', () => {
     existsMock.mockReturnValue(true);
 
@@ -142,11 +162,17 @@ describe('renderFigure()', () => {
       title: 'my caption',
       url: 'img.jpg',
     };
-    const rendered = renderFigure({ node, sources: srcSetFixture, options });
+    const rendered = renderFigure({
+      node,
+      sources: srcSetFixture,
+      options: noElasticOptions,
+    });
 
     const $ = cheerio.load(rendered);
 
-    expect($('figcaption').attr('class')).toBe(options.figCaptionClassName);
+    expect($('figcaption').attr('class')).toBe(
+      noElasticOptions.figCaptionClassName
+    );
     expect($('figcaption').text()).toBe('my caption');
   });
 });

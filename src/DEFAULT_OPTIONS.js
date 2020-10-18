@@ -8,6 +8,7 @@ const DEFAULT_OPTIONS = {
   srcDir: '.',
   targetDir: '.',
   loadingPolicy: 'eager',
+  elasticContainer: true,
 };
 
 export default DEFAULT_OPTIONS;

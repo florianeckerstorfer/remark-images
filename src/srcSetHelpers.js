@@ -18,15 +18,21 @@ export async function getSrcSet({ srcDir, fileName, width, resolutions }) {
   );
 
   return resolutions
-    .map((resolution) => ({
-      src: `${base}-${width * resolution}.${extension}`,
-      intrinsicWidth: width * resolution,
-      resolution,
-    }))
+    .map((resolution) => {
+      const intrinsicWidth = width * resolution;
+      const intrinsicHeight = getHeightFromWidth(intrinsicWidth, size);
+      const aspectRatio = intrinsicWidth / intrinsicHeight;
+      return {
+        src: `${base}-${intrinsicWidth}.${extension}`,
+        intrinsicWidth,
+        intrinsicHeight,
+        aspectRatio,
+        resolution,
+      };
+    })
     .filter((img) => {
-      const intrinsicHeight = getHeightFromWidth(img.intrinsicWidth, size);
       const isSmaller =
-        intrinsicHeight <= size.height && img.intrinsicWidth <= size.width;
+        img.intrinsicHeight <= size.height && img.intrinsicWidth <= size.width;
       if (isSmaller) {
         debug('Generated source "%s"', img.src);
       } else {
@@ -53,7 +59,13 @@ export function getSrcSets({ srcDir, fileName, widths, resolutions }) {
         fileName,
         width,
         resolutions: sortedResolutions,
-      }).then((srcSet) => resolve({ width, srcSet }));
+      }).then((srcSet) =>
+        resolve({
+          width,
+          srcSet,
+          aspectRatio: (srcSet[0] || {}).aspectRatio || 0,
+        })
+      );
     });
   });
 }
