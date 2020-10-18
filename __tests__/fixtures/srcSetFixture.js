@@ -1,6 +1,7 @@
 const srcSetFixture = [
   {
     width: 320,
+    aspectRatio: 0.6666666667,
     srcSet: [
       {
         src: 'foo-320.jpg',
@@ -27,6 +28,7 @@ const srcSetFixture = [
   },
   {
     width: 640,
+    aspectRatio: 0.6666666667,
     srcSet: [
       {
         src: 'foo-640.jpg',
@@ -53,6 +55,7 @@ const srcSetFixture = [
   },
   {
     width: 960,
+    aspectRatio: 0.6666666667,
     srcSet: [
       {
         src: 'foo-960.jpg',

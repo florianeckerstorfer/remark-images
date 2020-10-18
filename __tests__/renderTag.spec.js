@@ -42,4 +42,18 @@ describe('renderTag()', () => {
 
     expect(html).toBe('<img>');
   });
+
+  it('should render with closing tag if `children` is `true`', () => {
+    const html = renderTag('span', {}, true);
+
+    expect(html).toBe('<span></span>');
+  });
+
+  it('should render style attribute', () => {
+    const html = renderTag('span', { style: {
+      margin: 0, width: '100%',
+    }}, true);
+
+    expect(html).toBe('<span style="margin: 0; width: 100%;"></span>');
+  })
 });

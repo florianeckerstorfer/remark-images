@@ -57,7 +57,8 @@ const processor = remark().use([[images, options]]);
 | `imageSizes`          | `[320, 640, 960]`      | Width of the generated images            |
 | `srcDir`              | `.`                    | Directory where to look for images       |
 | `targetDir`           | `.`                    | Directory where to save generated images |
-| `loadingPolicy`       | `eager`                | Sets the `loading` attribute on `<img>`, `lazy` to load images when they become visible |
+| `loadingPolicy`       | `"eager"`              | Sets the `loading` attribute on `<img>`, `"lazy"` to load images when they become visible |
+| `elasticContainer`    | `true`                 | Insert elastic container to avoid layout jumps when the image loads |
 
 ## Debugging
 
