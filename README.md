@@ -16,6 +16,13 @@ Made by 👨‍💻[Florian Eckerstorfer](https://florian.ec) in beautiful 🎡 
 6. [License](#license)
 7. [Changelog](#changelog)
 
+## Features
+
+- Generates multiple sizes of images
+- Inserts `<source>` tags and `srcset`
+- Adds an elastic container to avoid layout jumps
+- Show a blurred version of the image while it is loading
+
 ## Installation
 
 You need to install `@fec/remark-images` with NPM or Yarn. Since this is a plugin for Remark, I assume you already have Remark installed and configured.
@@ -59,6 +66,7 @@ const processor = remark().use([[images, options]]);
 | `targetDir`           | `.`                    | Directory where to save generated images |
 | `loadingPolicy`       | `"eager"`              | Sets the `loading` attribute on `<img>`, `"lazy"` to load images when they become visible |
 | `elasticContainer`    | `true`                 | Insert elastic container to avoid layout jumps when the image loads |
+| `blurredBackground`   | `true`                 | Add a blurred background while the image is loading |
 
 ## Debugging
 
@@ -92,6 +100,10 @@ This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.
 This project is licensed under the [MIT License](LICENSE.md).
 
 ## Changelog
+
+### Version 0.4.0-alpha (October 19, 2020)
+
+- [#6](https://github.com/florianeckerstorfer/remark-images/pull/6) Add option to add a blurred background
 
 ### Version 0.3.0-alpha (October 18, 2020)
 
