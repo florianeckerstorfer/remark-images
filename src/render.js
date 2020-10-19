@@ -38,7 +38,7 @@ export function renderSource({ srcSet, width }) {
   });
 }
 
-export function renderFigure({ node, sources, options }) {
+export function renderFigure({ node, sources, options, bgImage, bgData }) {
   const srcSets = [...sources];
 
   const aspectRatio = srcSets[0].aspectRatio;
@@ -73,20 +73,24 @@ export function renderFigure({ node, sources, options }) {
     sources: [...sourceTags, imgTag],
   });
 
+  const elasticContainerStyle = {
+    bottom: 0,
+    display: 'block',
+    filter: 'blur(50%)',
+    left: 0,
+    'padding-bottom': `${(1 / aspectRatio) * 100}%`,
+    position: 'relative',
+  };
+
+  if (options.blurredBackground) {
+    const bgDataUrl = `data:image/${bgData.format};base64,${bgImage}`;
+    elasticContainerStyle['background-image'] = `url(${bgDataUrl})`;
+    elasticContainerStyle['background-repeat'] = 'no-repeat';
+    elasticContainerStyle['background-size'] = '100% 100%';
+  }
+
   const bgTag = options.elasticContainer
-    ? renderTag(
-        'span',
-        {
-          style: {
-            bottom: 0,
-            display: 'block',
-            left: 0,
-            'padding-bottom': `${(1 / aspectRatio) * 100}%`,
-            position: 'relative',
-          },
-        },
-        true
-      )
+    ? renderTag('span', { style: elasticContainerStyle }, true)
     : undefined;
 
   const imageWrapper = options.elasticContainer
@@ -97,6 +101,7 @@ export function renderFigure({ node, sources, options }) {
             display: 'block',
             'margin-left': 'auto',
             'margin-right': 'auto',
+            overflow: 'hidden',
             position: 'relative',
           },
         },

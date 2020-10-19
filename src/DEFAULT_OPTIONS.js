@@ -9,6 +9,7 @@ const DEFAULT_OPTIONS = {
   targetDir: '.',
   loadingPolicy: 'eager',
   elasticContainer: true,
+  blurredBackground: true,
 };
 
 export default DEFAULT_OPTIONS;

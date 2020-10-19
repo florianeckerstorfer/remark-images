@@ -12,8 +12,15 @@ import srcSetFixture from './fixtures/srcSetFixture';
 
 jest.mock('../src/fileHelpers');
 
-const noElasticOptions = { ...DEFAULT_OPTIONS, elasticContainer: false };
-const withElasticOptions = { ...DEFAULT_OPTIONS };
+const noElasticOptions = {
+  ...DEFAULT_OPTIONS,
+  elasticContainer: false,
+  blurredBackground: false,
+};
+
+const withElasticOptions = { ...DEFAULT_OPTIONS, blurredBackground: false };
+
+const withElasticBlurOptions = { ...DEFAULT_OPTIONS };
 
 describe('renderCaption()', () => {
   it('should render caption with className', () => {
@@ -149,6 +156,31 @@ describe('renderFigure()', () => {
     expect($('figure > span > span').attr('style')).toContain('relative');
     expect($('figure > span > span').attr('style')).toContain(
       'padding-bottom: 149.9999999925%'
+    );
+    expect($('img').attr('style')).toContain('absolute');
+  });
+
+  it('should render image with elastic container and blurred background', () => {
+    existsMock.mockReturnValue(true);
+
+    const node = { type: 'image', alt: 'my alt', url: 'img.jpg' };
+
+    const rendered = renderFigure({
+      node,
+      sources: srcSetFixture,
+      options: withElasticBlurOptions,
+      bgData: { format: 'jpeg' },
+    });
+
+    const $ = cheerio.load(rendered);
+
+    expect($('figure > span').attr('style')).toContain('relative');
+    expect($('figure > span > span').attr('style')).toContain('relative');
+    expect($('figure > span > span').attr('style')).toContain(
+      'padding-bottom: 149.9999999925%'
+    );
+    expect($('figure > span > span').attr('style')).toContain(
+      'background-image: url(data:image/jpeg;base64,'
     );
     expect($('img').attr('style')).toContain('absolute');
   });
