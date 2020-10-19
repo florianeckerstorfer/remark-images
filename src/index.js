@@ -1,5 +1,6 @@
 import createDebug from 'debug';
 import path from 'path';
+import sharp from 'sharp';
 import visitWithParents from 'unist-util-visit-parents';
 import DEFAULT_OPTIONS from './DEFAULT_OPTIONS';
 import { fileExists, noTrailingSlash } from './fileHelpers';
@@ -60,16 +61,34 @@ function responsiveImages(pluginOptions) {
               sourceFile: node.url,
               targetDir: options.targetDir,
             }).then((generatedImages) => {
-              debug('Generated %d images for node %O', generatedImages, node);
-              resolve({ node, sources, inLink });
+              const sourceFile = path.join(options.srcDir, node.url);
+              sharp(sourceFile)
+                .resize(20, 20)
+                .toBuffer({ resolveWithObject: true })
+                .then(({ data, info }) => [data.toString('base64'), info])
+                .then(([bgImage, bgData]) => {
+                  debug(
+                    'Generated %d images for node %O',
+                    generatedImages,
+                    node
+                  );
+                  resolve({ node, sources, inLink, bgImage, bgData });
+                });
             });
           });
         });
       });
 
     return Promise.all(promises).then((images) => {
-      images.forEach(({ node, sources, inLink }) => {
-        const rawHtml = renderFigure({ node, sources, inLink, options });
+      images.forEach(({ node, sources, inLink, bgImage, bgData }) => {
+        const rawHtml = renderFigure({
+          node,
+          sources,
+          inLink,
+          bgImage,
+          bgData,
+          options,
+        });
         node.type = 'html';
         node.value = rawHtml;
       });

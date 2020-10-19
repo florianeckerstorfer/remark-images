@@ -59,13 +59,13 @@ export function getSrcSets({ srcDir, fileName, widths, resolutions }) {
         fileName,
         width,
         resolutions: sortedResolutions,
-      }).then((srcSet) =>
+      }).then((srcSet) => {
         resolve({
-          width,
-          srcSet,
           aspectRatio: (srcSet[0] || {}).aspectRatio || 0,
-        })
-      );
+          srcSet,
+          width,
+        });
+      });
     });
   });
 }
