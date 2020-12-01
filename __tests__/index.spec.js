@@ -25,74 +25,64 @@ describe('remark-images', () => {
     }
   });
 
-  it('should return HTML for image', (done) => {
+  it('should return HTML for image', async () => {
     const input = '![My image](foo.jpg)';
 
-    processor.process(input, (_, file) => {
-      const result = cheerio.load(String(file));
-      expect(result('figure').length).toBe(1);
-      expect(result('picture').length).toBe(1);
-      expect(result('source').length).toBe(2);
-      expect(result('img').length).toBe(1);
-      expect(result('img').attr('alt')).toBe('My image');
-      expect(result('figcaption').length).toBe(0);
-      done();
-    });
+    const { contents } = await processor.process(input);
+    const result = cheerio.load(contents);
+    expect(result('figure').length).toBe(1);
+    expect(result('picture').length).toBe(1);
+    expect(result('source').length).toBe(2);
+    expect(result('img').length).toBe(1);
+    expect(result('img').attr('alt')).toBe('My image');
+    expect(result('figcaption').length).toBe(0);
   });
 
-  it('should return HTML for image with caption', (done) => {
+  it('should return HTML for image with caption', async () => {
     const input = '![My image](foo.jpg "My caption")';
 
-    processor.process(input, (_, file) => {
-      const result = cheerio.load(String(file));
-      expect(result('figure').length).toBe(1);
-      expect(result('picture').length).toBe(1);
-      expect(result('source').length).toBe(2);
-      expect(result('img').length).toBe(1);
-      expect(result('img').attr('alt')).toBe('My image');
-      expect(result('figcaption').length).toBe(1);
-      done();
-    });
+    const { contents } = await processor.process(input);
+    const result = cheerio.load(contents);
+    expect(result('figure').length).toBe(1);
+    expect(result('picture').length).toBe(1);
+    expect(result('source').length).toBe(2);
+    expect(result('img').length).toBe(1);
+    expect(result('img').attr('alt')).toBe('My image');
+    expect(result('figcaption').length).toBe(1);
   });
 
-  it('should return HTML for image that is too small for all sizes', (done) => {
+  it('should return HTML for image that is too small for all sizes', async () => {
     const input = '![My image](small.jpg)';
 
-    processor.process(input, (_, file) => {
-      const result = cheerio.load(String(file));
-      expect(result('source').length).toBe(1);
-      expect(result('source').attr('srcset')).toBe('small-640.jpg');
-      expect(result('img').length).toBe(1);
-      expect(result('img').attr('src')).toBe('small-320.jpg');
-      expect(result('img').attr('srcset')).toContain('small-640.jpg 2x');
-      expect(result('img').attr('srcset')).toContain('small-320.jpg');
-      done();
-    });
+    const { contents } = await processor.process(input);
+    const result = cheerio.load(contents);
+    expect(result('source').length).toBe(1);
+    expect(result('source').attr('srcset')).toBe('small-640.jpg');
+    expect(result('img').length).toBe(1);
+    expect(result('img').attr('src')).toBe('small-320.jpg');
+    expect(result('img').attr('srcset')).toContain('small-640.jpg 2x');
+    expect(result('img').attr('srcset')).toContain('small-320.jpg');
   });
 
-  it('should not modify node if image does not exist', (done) => {
+  it('should not modify node if image does not exist', async () => {
     const input = '![My image](invalid.jpg)';
 
-    processor.process(input, (_, file) => {
-      const result = cheerio.load(String(file));
-      expect(result('figure').length).toBe(0);
-      expect(result('img').length).toBe(1);
-      expect(result('img').attr('src')).toBe('invalid.jpg');
-      expect(result('img').attr('alt')).toBe('My image');
-      done();
-    });
+    const { contents } = await processor.process(input);
+    const result = cheerio.load(contents);
+    expect(result('figure').length).toBe(0);
+    expect(result('img').length).toBe(1);
+    expect(result('img').attr('src')).toBe('invalid.jpg');
+    expect(result('img').attr('alt')).toBe('My image');
   });
 
-  it('should not modify node if image gif', (done) => {
+  it('should not modify node if image gif', async () => {
     const input = '![My image](foo.gif)';
 
-    processor.process(input, (_, file) => {
-      const result = cheerio.load(String(file));
-      expect(result('figure').length).toBe(0);
-      expect(result('img').length).toBe(1);
-      expect(result('img').attr('src')).toBe('foo.gif');
-      expect(result('img').attr('alt')).toBe('My image');
-      done();
-    });
+    const { contents } = await processor.process(input);
+    const result = cheerio.load(contents);
+    expect(result('figure').length).toBe(0);
+    expect(result('img').length).toBe(1);
+    expect(result('img').attr('src')).toBe('foo.gif');
+    expect(result('img').attr('alt')).toBe('My image');
   });
 });
