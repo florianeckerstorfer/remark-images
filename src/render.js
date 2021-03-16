@@ -1,10 +1,11 @@
 import createDebug from 'debug';
 import renderTag from './renderTag';
+import {parseMarkdown} from './remarkHelpers'
 
 const debug = createDebug('RemarkResponsiveImages');
 
 export function renderCaption({ caption, className }) {
-  return renderTag('figcaption', { class: className }, caption);
+  return renderTag('figcaption', { class: className }, parseMarkdown(caption));
 }
 
 export function renderPicture({ className, sources }) {
