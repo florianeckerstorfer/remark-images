@@ -67,16 +67,16 @@ const processor = remark().use([[images, options]]);
 | `loadingPolicy`       | `"eager"`              | Sets the `loading` attribute on `<img>`, `"lazy"` to load images when they become visible |
 | `elasticContainer`    | `true`                 | Insert elastic container to avoid layout jumps when the image loads                       |
 | `blurredBackground`   | `true`                 | Add a blurred background while the image is loading                                       |
-| `parseCaption`        | `(caption) => caption` | Define a function to process image caption, eg. convert markdown to HTML                  |
+| `processCaption`      | `(caption) => caption` | Define a function to process image caption, eg. convert markdown to HTML                  |
 
-#### Parse Caption
+#### Process Caption
 If you're using markdown in the image captions, you can define a custom function to process the caption before it renders (by default it won't process the caption). Eg.
 
 ```js
 const remark = require('remark')
 const html = require('remark-html')
 
-const parseCaption = (markdown) => {
+const processCaption = (markdown) => {
 	return remark()
     .use(html)
     .processSync(markdown)
