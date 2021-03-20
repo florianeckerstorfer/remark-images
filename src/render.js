@@ -3,8 +3,8 @@ import renderTag from './renderTag';
 
 const debug = createDebug('RemarkResponsiveImages');
 
-export function renderCaption({ caption, className }) {
-  return renderTag('figcaption', { class: className }, caption);
+export function renderCaption({ caption, className, processCaption }) {
+  return renderTag('figcaption', { class: className }, processCaption(caption));
 }
 
 export function renderPicture({ className, sources }) {
@@ -113,6 +113,7 @@ export function renderFigure({ node, sources, options, bgImage, bgData }) {
     ? renderCaption({
         caption: node.title,
         className: options.figCaptionClassName,
+        processCaption: options.processCaption
       })
     : undefined;
   if (captionTag) {
