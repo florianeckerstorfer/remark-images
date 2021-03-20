@@ -24,9 +24,25 @@ const withElasticBlurOptions = { ...DEFAULT_OPTIONS };
 
 describe('renderCaption()', () => {
   it('should render caption with className', () => {
-    const rendered = renderCaption({ caption: 'My caption', className: 'foo' });
+    const rendered = renderCaption({
+      caption: 'My caption',
+      className: 'foo',
+      processCaption: (caption) => caption,
+    });
 
     expect(rendered).toBe('<figcaption class="foo">My caption</figcaption>');
+  });
+
+  it('should render processed caption', () => {
+    const processCaption = jest.fn().mockImplementation((caption) => caption);
+    const rendered = renderCaption({
+      caption: 'My caption',
+      className: 'foo',
+      processCaption,
+    });
+
+    expect(rendered).toBe('<figcaption class="foo">My caption</figcaption>');
+    expect(processCaption).toHaveBeenCalledTimes(1);
   });
 });
 
