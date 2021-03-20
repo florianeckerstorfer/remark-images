@@ -1,6 +1,6 @@
 # remark-images
 
-> Plugin for [Remark](https://remark.js.org/) to make the images in your Markdown responsives.
+> Plugin for [Remark](https://remark.js.org/) to make the images in your Markdown responsive.
 
 ![Unit tests](https://github.com/florianeckerstorfer/remark-images/workflows/Unit%20tests/badge.svg)
 
@@ -14,7 +14,7 @@ Made by 👨‍💻[Florian Eckerstorfer](https://florian.ec) in beautiful 🎡 
 4. [Contributing](#contributing)
 5. [Code of Conduct](#code-of-conduct)
 6. [License](#license)
-7. [Changelog](#changelog)
+7. [Change log](#change-log)
 
 ## Features
 
@@ -52,6 +52,10 @@ const images = require('@fec/remark-images');
 const processor = remark().use([[images, options]]);
 ```
 
+### Articles and tutorials
+
+- [Eleventy and Responsive Images](https://florian.ec/blog/eleventy-and-responsive-images/) by Florian Eckerstorfer
+
 ### Options
 
 | Option                | Default value          | Description                                                                               |
@@ -70,18 +74,16 @@ const processor = remark().use([[images, options]]);
 | `processCaption`      | `(caption) => caption` | Define a function to process image caption, eg. convert markdown to HTML                  |
 
 #### Process Caption
+
 If you're using markdown in the image captions, you can define a custom function to process the caption before it renders (by default it won't process the caption). Eg.
 
 ```js
-const remark = require('remark')
-const html = require('remark-html')
+const remark = require('remark');
+const html = require('remark-html');
 
 const processCaption = (markdown) => {
-	return remark()
-    .use(html)
-    .processSync(markdown)
-    .toString()
-}
+  return remark().use(html).processSync(markdown).toString();
+};
 ```
 
 ## Debugging
@@ -115,7 +117,12 @@ This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.
 
 This project is licensed under the [MIT License](LICENSE.md).
 
-## Changelog
+## Change log
+
+### Version 0.5.0-alpha (March 20, 2021)
+
+- [#8](https://github.com/florianeckerstorfer/remark-images/pull/8) Add option to process caption (by [amykapernick](https://github.com/amykapernick))
+- [#10](https://github.com/florianeckerstorfer/remark-images/pull/10) Add support for Node 15
 
 ### Version 0.4.0-alpha (October 19, 2020)
 
