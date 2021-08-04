@@ -72,9 +72,7 @@ const processor = remark().use([[images, options]]);
 | `elasticContainer`    | `true`                 | Insert elastic container to avoid layout jumps when the image loads                       |
 | `blurredBackground`   | `true`                 | Add a blurred background while the image is loading                                       |
 | `processCaption`      | `(caption) => caption` | Define a function to process image caption, eg. convert markdown to HTML                  |
-| `staticPrefix`        | `false`                | Set this to a string to prefix the img `src` and attribute.
-                                                   It will also suffix the `targetDir`. This allows you to put all auto-generated files in
-                                                   a specific folder so you can `.gitignore` them.                                           |
+| `staticPrefix`        | `false`                | Set this to a string to prefix the img `src` and attribute.  It will also suffix the `targetDir`. This allows you to put all auto-generated files in a specific folder so you can `.gitignore` them. |
 
 #### Process Caption
 
