@@ -72,6 +72,7 @@ const processor = remark().use([[images, options]]);
 | `elasticContainer`    | `true`                 | Insert elastic container to avoid layout jumps when the image loads                       |
 | `blurredBackground`   | `true`                 | Add a blurred background while the image is loading                                       |
 | `processCaption`      | `(caption) => caption` | Define a function to process image caption, eg. convert markdown to HTML                  |
+| `altAsFallbackCaption`| `false`                | Use the image `alt` attribute as a caption when there is no `title` attribute             |
 
 #### Process Caption
 

@@ -109,9 +109,9 @@ export function renderFigure({ node, sources, options, bgImage, bgData }) {
       )
     : undefined;
 
-  const captionTag = node.title
+  const captionTag = (node.title || (node.alt && options.altAsFallbackCaption))
     ? renderCaption({
-        caption: node.title,
+        caption: node.title || node.alt,
         className: options.figCaptionClassName,
         processCaption: options.processCaption
       })
