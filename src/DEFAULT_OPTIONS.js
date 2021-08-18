@@ -10,7 +10,8 @@ const DEFAULT_OPTIONS = {
   loadingPolicy: 'eager',
   elasticContainer: true,
   blurredBackground: true,
-  processCaption: (caption) => caption
+  processCaption: (caption) => caption,
+  staticPrefix: false
 };
 
 export default DEFAULT_OPTIONS;

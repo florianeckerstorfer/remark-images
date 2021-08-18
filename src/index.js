@@ -53,6 +53,7 @@ function responsiveImages(pluginOptions) {
               fileName: node.url,
               widths: options.imageSizes,
               resolutions: options.resolutions,
+              staticPrefix: options.staticPrefix,
             })
           ).then((sources) => {
             generateImages({

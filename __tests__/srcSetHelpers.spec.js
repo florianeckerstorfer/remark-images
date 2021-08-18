@@ -11,6 +11,7 @@ const srcDir = 'site';
 const fileName = 'foo.jpg';
 const width = 320;
 const resolutions = [1, 2];
+const staticPrefix = '/prefix/';
 
 describe('getSrcSet()', () => {
   beforeEach(() => {
@@ -28,6 +29,13 @@ describe('getSrcSet()', () => {
 
     expect(srcSet[0].srcSet).toEqual(['foo-320.jpg']);
     expect(srcSet[1].srcSet).toEqual(['foo-640.jpg', '2x']);
+  });
+
+  it('should return src set for multiple resolutions with a staticPrefix', async () => {
+    const srcSet = await getSrcSet({ srcDir, fileName, width, resolutions, staticPrefix });
+
+    expect(srcSet[0].srcSet).toEqual([`${staticPrefix}foo-320.jpg`]);
+    expect(srcSet[1].srcSet).toEqual([`${staticPrefix}foo-640.jpg`, '2x']);
   });
 });
 
@@ -56,4 +64,24 @@ describe('getSrcSets()', () => {
     expect(srcSets[2].srcSet[0].srcSet).toEqual(['foo-960.jpg']);
     expect(srcSets[2].srcSet[1].srcSet).toEqual(['foo-1920.jpg', '2x']);
   });
+
+  it('should return array of src sets with a staticPrefix', async () => {
+    const widths = [320, 640, 960];
+    const srcSets = await Promise.all(
+      getSrcSets({ srcDir, fileName, widths, resolutions, staticPrefix })
+    );
+
+    expect(srcSets[0].width).toBe(320);
+    expect(srcSets[0].srcSet[0].srcSet).toEqual([`${staticPrefix}foo-320.jpg`]);
+    expect(srcSets[0].srcSet[1].srcSet).toEqual([`${staticPrefix}foo-640.jpg`, '2x']);
+
+    expect(srcSets[1].width).toBe(640);
+    expect(srcSets[1].srcSet[0].srcSet).toEqual([`${staticPrefix}foo-640.jpg`]);
+    expect(srcSets[1].srcSet[1].srcSet).toEqual([`${staticPrefix}foo-1280.jpg`, '2x']);
+
+    expect(srcSets[2].width).toBe(960);
+    expect(srcSets[2].srcSet[0].srcSet).toEqual([`${staticPrefix}foo-960.jpg`]);
+    expect(srcSets[2].srcSet[1].srcSet).toEqual([`${staticPrefix}foo-1920.jpg`, '2x']);
+  });
 });
+
