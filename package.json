@@ -11,6 +11,10 @@
   },
   "author": "Florian Eckerstofer <florian@eckerstorfer.net>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/florianeckerstorfer/remark-images.git"
+  },
   "keywords": [
     "remark",
     "responsive",

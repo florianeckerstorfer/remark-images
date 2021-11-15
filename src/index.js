@@ -83,7 +83,7 @@ function responsiveImages(pluginOptions) {
       images.forEach(({ node, sources, inLink, bgImage, bgData }) => {
         const rawHtml = renderFigure({
           node,
-          sources,
+          sources: sources.filter(src => src.srcSet.length > 0),
           inLink,
           bgImage,
           bgData,
