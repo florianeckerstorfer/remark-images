@@ -119,6 +119,10 @@ This project is licensed under the [MIT License](LICENSE.md).
 
 ## Change log
 
+### Version 0.6.0-alpha (November 15, 2021)
+
+- [#13](https://github.com/florianeckerstorfer/remark-images/pull/13) Remove empty `srcSet` from generated HTML (by [joostdecock](https://github.com/florianeckerstorfer/remark-images/commits?author=joostdecock))
+
 ### Version 0.5.0-alpha (March 20, 2021)
 
 - [#8](https://github.com/florianeckerstorfer/remark-images/pull/8) Add option to process caption (by [amykapernick](https://github.com/amykapernick))
