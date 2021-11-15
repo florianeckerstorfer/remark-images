@@ -13,7 +13,7 @@ describe('remark-images', () => {
     targetDir: targetDir,
   };
   const processor = remark()
-    .use(html)
+    .use(html, { sanitize: false })
     .use([[plugin, options]]);
 
   beforeEach(() => {
