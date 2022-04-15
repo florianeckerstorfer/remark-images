@@ -1,20 +1,20 @@
 import createDebug from 'debug';
 import path from 'path';
 import sharp from 'sharp';
-import visitWithParents from 'unist-util-visit-parents';
-import DEFAULT_OPTIONS from './DEFAULT_OPTIONS';
-import { fileExists, noTrailingSlash } from './fileHelpers';
-import { generateImages } from './generateImages';
-import { findParentLinks } from './remarkHelpers';
-import { renderFigure } from './render';
-import { getSrcSets } from './srcSetHelpers';
+import {visitParents} from 'unist-util-visit-parents';
+import DEFAULT_OPTIONS from './DEFAULT_OPTIONS.js';
+import { fileExists, noTrailingSlash } from './fileHelpers.js';
+import { generateImages } from './generateImages.js';
+import { findParentLinks } from './remarkHelpers.js';
+import { renderFigure } from './render.js';
+import { getSrcSets } from './srcSetHelpers.js';
 
 const debug = createDebug('RemarkResponsiveImages');
 
 function findMarkdownImageNodes(markdownAST) {
   const markdownImageNodes = [];
 
-  visitWithParents(
+  visitParents(
     markdownAST,
     ['image', 'imageReference'],
     (node, ancestors) => {
@@ -81,7 +81,7 @@ function responsiveImages(pluginOptions) {
 
     return Promise.all(promises).then((images) => {
       images.forEach(({ node, sources, inLink, bgImage, bgData }) => {
-        const rawHtml = renderFigure({
+        const figure = renderFigure({
           node,
           sources: sources.filter(src => src.srcSet.length > 0),
           inLink,
@@ -89,8 +89,8 @@ function responsiveImages(pluginOptions) {
           bgData,
           options,
         });
-        node.type = 'html';
-        node.value = rawHtml;
+        node.type = 'hast';
+        node.value = figure;
       });
     });
   }

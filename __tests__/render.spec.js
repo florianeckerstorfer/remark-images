@@ -1,4 +1,4 @@
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import {
   renderCaption,
   renderPicture,
@@ -30,7 +30,9 @@ describe('renderCaption()', () => {
       processCaption: (caption) => caption,
     });
 
-    expect(rendered).toBe('<figcaption class="foo">My caption</figcaption>');
+    expect(rendered.tagName).toBe('figcaption');
+    expect(rendered.properties.className).toContain('foo');
+    expect(rendered.children[0].value).toBe('My caption');
   });
 
   it('should render processed caption', () => {
@@ -41,7 +43,9 @@ describe('renderCaption()', () => {
       processCaption,
     });
 
-    expect(rendered).toBe('<figcaption class="foo">My caption</figcaption>');
+    expect(rendered.tagName).toBe('figcaption');
+    expect(rendered.properties.className).toContain('foo');
+    expect(rendered.children[0].value).toBe('My caption');
     expect(processCaption).toHaveBeenCalledTimes(1);
   });
 });
@@ -50,7 +54,9 @@ describe('renderPicture', () => {
   it('should render picture with className', () => {
     const rendered = renderPicture({ sources: '<source />', className: 'foo' });
 
-    expect(rendered).toBe('<picture class="foo"><source /></picture>');
+    expect(rendered.tagName).toBe('picture');
+    expect(rendered.properties.className).toContain('foo');
+    expect(rendered.children[0].value).toBe('<source />');
   });
 });
 
@@ -62,9 +68,12 @@ describe('renderImg()', () => {
       srcSet: [{ srcSet: ['foo-320.jpg'] }],
     });
 
-    expect(rendered).toBe(
-      '<img srcset="foo-320.jpg" src="foo-320.jpg" alt="My alt" class="foo" loading="eager">'
-    );
+    expect(rendered.tagName).toBe('img');
+    expect(rendered.properties.className).toContain('foo');
+    expect(rendered.properties.loading).toBe('eager');
+    expect(rendered.properties.alt).toBe('My alt');
+    expect(rendered.properties.src).toBe('foo-320.jpg');
+    expect(rendered.properties.srcSet).toBe('foo-320.jpg');
   });
 
   it('should render img with loading policy', () => {
@@ -75,7 +84,7 @@ describe('renderImg()', () => {
       loadingPolicy: 'lazy',
     });
 
-    expect(rendered).toContain('loading="lazy"');
+    expect(rendered.properties.loading).toBe('lazy');
   });
 
   it('should render img with eager loading policy if value is invalid', () => {
@@ -86,7 +95,7 @@ describe('renderImg()', () => {
       loadingPolicy: 'invalid',
     });
 
-    expect(rendered).toContain('loading="eager"');
+    expect(rendered.properties.loading).toBe('eager');
   });
 
   it('should return `null` if srcSet is empty', () => {
@@ -104,9 +113,9 @@ describe('renderSource()', () => {
     ];
     const rendered = renderSource({ srcSet, width: 640 });
 
-    expect(rendered).toBe(
-      '<source srcset="foo-1280.jpg 2x, foo-640.jpg" media="(min-width: 640px)">'
-    );
+    expect(rendered.tagName).toBe('source');
+    expect(rendered.properties.media).toBe('(min-width: 640px)');
+    expect(rendered.properties.srcSet).toBe('foo-1280.jpg 2x, foo-640.jpg');
   });
 });
 
@@ -129,30 +138,29 @@ describe('renderFigure()', () => {
       options: noElasticOptions,
     });
 
-    const $ = cheerio.load(rendered);
+    expect(rendered.tagName).toBe('figure');
+    expect(rendered.properties.className).toContain(noElasticOptions.figureClassName);
 
-    expect($('figure').html().length).toBeGreaterThan(0);
-    expect($('figure').attr('class')).toBe(noElasticOptions.figureClassName);
+    const pictureTag = rendered.children[0];
+    expect(pictureTag.tagName).toBe('picture');
+    expect(pictureTag.properties.className).toContain(noElasticOptions.pictureClassName);
 
-    expect($('picture').html().length).toBeGreaterThan(0);
-    expect($('picture').attr('class')).toBe(noElasticOptions.pictureClassName);
+    const sourceTag1 = pictureTag.children[0];
+    expect(sourceTag1.tagName).toBe('source');
+    expect(sourceTag1.properties.media).toBe('(min-width: 960px)');
+    expect(sourceTag1.properties.srcSet).toBe('foo-960.jpg, foo-1920.jpg 2x, foo-2880.jpg 3x');
 
-    expect($('img').attr('class')).toBe(noElasticOptions.imgClassName);
-    expect($('img').attr('alt')).toBe('my alt');
-    expect($('img').attr('src')).toBe('foo-320.jpg');
-    expect($('img').attr('srcset')).toBe(
-      'foo-320.jpg, foo-640.jpg 2x, foo-960.jpg 3x'
-    );
+    const sourceTag2 = pictureTag.children[1];
+    expect(sourceTag2.tagName).toBe('source');
+    expect(sourceTag2.properties.media).toBe('(min-width: 640px)');
+    expect(sourceTag2.properties.srcSet).toBe('foo-640.jpg, foo-1280.jpg 2x, foo-1920.jpg 3x');
 
-    expect($('source').first().attr('media')).toBe('(min-width: 960px)');
-    expect($('source').first().attr('srcset')).toBe(
-      'foo-960.jpg, foo-1920.jpg 2x, foo-2880.jpg 3x'
-    );
-
-    expect($('source').last().attr('media')).toBe('(min-width: 640px)');
-    expect($('source').last().attr('srcset')).toBe(
-      'foo-640.jpg, foo-1280.jpg 2x, foo-1920.jpg 3x'
-    );
+    const imgTag = pictureTag.children[2];
+    expect(imgTag.tagName).toBe('img');
+    expect(imgTag.properties.className).toContain(noElasticOptions.imgClassName);
+    expect(imgTag.properties.alt).toBe('my alt');
+    expect(imgTag.properties.src).toBe('foo-320.jpg');
+    expect(imgTag.properties.srcSet).toBe('foo-320.jpg, foo-640.jpg 2x, foo-960.jpg 3x');
   });
 
   it('should render image with elastic container', () => {
@@ -166,14 +174,18 @@ describe('renderFigure()', () => {
       options: withElasticOptions,
     });
 
-    const $ = cheerio.load(rendered);
+    const spanTag1 = rendered.children[0];
+    expect(spanTag1.tagName).toBe('span');
+    expect(spanTag1.properties.style).toContain('relative');
+    
+    const spanTag2 = spanTag1.children[0];
+    expect(spanTag2.tagName).toBe('span');
+    expect(spanTag2.properties.style).toContain('relative');
+    expect(spanTag2.properties.style).toContain('padding-bottom: 149.9999999925%');
 
-    expect($('figure > span').attr('style')).toContain('relative');
-    expect($('figure > span > span').attr('style')).toContain('relative');
-    expect($('figure > span > span').attr('style')).toContain(
-      'padding-bottom: 149.9999999925%'
-    );
-    expect($('img').attr('style')).toContain('absolute');
+    const imgTag = spanTag1.children[1].children[2];
+    expect(imgTag.tagName).toBe('img');
+    expect(imgTag.properties.style).toContain('absolute');
   });
 
   it('should render image with elastic container and blurred background', () => {
@@ -188,17 +200,19 @@ describe('renderFigure()', () => {
       bgData: { format: 'jpeg' },
     });
 
-    const $ = cheerio.load(rendered);
+    const spanTag1 = rendered.children[0];
+    expect(spanTag1.tagName).toBe('span');
+    expect(spanTag1.properties.style).toContain('relative');
 
-    expect($('figure > span').attr('style')).toContain('relative');
-    expect($('figure > span > span').attr('style')).toContain('relative');
-    expect($('figure > span > span').attr('style')).toContain(
-      'padding-bottom: 149.9999999925%'
-    );
-    expect($('figure > span > span').attr('style')).toContain(
-      'background-image: url(data:image/jpeg;base64,'
-    );
-    expect($('img').attr('style')).toContain('absolute');
+    const spanTag2 = spanTag1.children[0];
+    expect(spanTag2.tagName).toBe('span');
+    expect(spanTag2.properties.style).toContain('relative');
+    expect(spanTag2.properties.style).toContain('padding-bottom: 149.9999999925%');
+    expect(spanTag2.properties.style).toContain('background-image: url(data:image/jpeg;base64,');
+
+    const imgTag = spanTag1.children[1].children[2];
+    expect(imgTag.tagName).toBe('img');
+    expect(imgTag.properties.style).toContain('absolute');
   });
 
   it('should render image with caption', () => {
@@ -216,11 +230,7 @@ describe('renderFigure()', () => {
       options: noElasticOptions,
     });
 
-    const $ = cheerio.load(rendered);
-
-    expect($('figcaption').attr('class')).toBe(
-      noElasticOptions.figCaptionClassName
-    );
-    expect($('figcaption').text()).toBe('my caption');
+    expect(rendered.children[1].tagName).toBe('figcaption');
+    expect(rendered.children[1].children[0].value).toBe('my caption');
   });
 });

@@ -1,5 +1,5 @@
 import plugin from '../src';
-import remark from 'remark';
+import {remark} from 'remark';
 import html from 'remark-html';
 import path from 'path';
 import cheerio from 'cheerio';
@@ -28,8 +28,8 @@ describe('remark-images', () => {
   it('should return HTML for image', async () => {
     const input = '![My image](foo.jpg)';
 
-    const { contents } = await processor.process(input);
-    const result = cheerio.load(contents);
+    const contents = await processor.process(input);
+    const result = cheerio.load(String(contents));
     expect(result('figure').length).toBe(1);
     expect(result('picture').length).toBe(1);
     expect(result('source').length).toBe(2);
@@ -41,8 +41,8 @@ describe('remark-images', () => {
   it('should return HTML for image with caption', async () => {
     const input = '![My image](foo.jpg "My caption")';
 
-    const { contents } = await processor.process(input);
-    const result = cheerio.load(contents);
+    const contents = await processor.process(input);
+    const result = cheerio.load(String(contents));
     expect(result('figure').length).toBe(1);
     expect(result('picture').length).toBe(1);
     expect(result('source').length).toBe(2);
@@ -54,8 +54,8 @@ describe('remark-images', () => {
   it('should return HTML for image that is too small for all sizes', async () => {
     const input = '![My image](small.jpg)';
 
-    const { contents } = await processor.process(input);
-    const result = cheerio.load(contents);
+    const contents = await processor.process(input);
+    const result = cheerio.load(String(contents));
     expect(result('source').length).toBe(1);
     expect(result('source').attr('srcset')).toBe('small-640.jpg');
     expect(result('img').length).toBe(1);
@@ -67,8 +67,8 @@ describe('remark-images', () => {
   it('should not modify node if image does not exist', async () => {
     const input = '![My image](invalid.jpg)';
 
-    const { contents } = await processor.process(input);
-    const result = cheerio.load(contents);
+    const contents = await processor.process(input);
+    const result = cheerio.load(String(contents));
     expect(result('figure').length).toBe(0);
     expect(result('img').length).toBe(1);
     expect(result('img').attr('src')).toBe('invalid.jpg');
@@ -78,8 +78,8 @@ describe('remark-images', () => {
   it('should not modify node if image gif', async () => {
     const input = '![My image](foo.gif)';
 
-    const { contents } = await processor.process(input);
-    const result = cheerio.load(contents);
+    const contents = await processor.process(input);
+    const result = cheerio.load(String(contents));
     expect(result('figure').length).toBe(0);
     expect(result('img').length).toBe(1);
     expect(result('img').attr('src')).toBe('foo.gif');

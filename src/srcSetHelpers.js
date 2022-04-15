@@ -2,7 +2,7 @@ import createDebug from 'debug';
 import fs from 'fs';
 import path from 'path';
 import probeImageSize from 'probe-image-size';
-import { getFileNameInfo } from './fileHelpers';
+import { getFileNameInfo } from './fileHelpers.js';
 
 const debug = createDebug('RemarkResponsiveImages');
 

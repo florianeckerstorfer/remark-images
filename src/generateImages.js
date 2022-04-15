@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import probeImageSize from 'probe-image-size';
 import sharp from 'sharp';
-import { fileExists, isNewerFile } from './fileHelpers';
+import { fileExists, isNewerFile } from './fileHelpers.js';
 
 const debug = createDebug('RemarkResponsiveImages');
 

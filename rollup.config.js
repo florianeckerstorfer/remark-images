@@ -8,6 +8,7 @@ export default [
       'sharp',
       'probe-image-size',
       'unist-util-visit-parents',
+      'hastscript',
       'fs',
       'path',
       'debug',

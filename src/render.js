@@ -1,14 +1,14 @@
 import createDebug from 'debug';
-import renderTag from './renderTag';
+import {h} from 'hastscript';
 
 const debug = createDebug('RemarkResponsiveImages');
 
 export function renderCaption({ caption, className, processCaption }) {
-  return renderTag('figcaption', { class: className }, processCaption(caption));
+  return h('figcaption', { className}, processCaption(caption));
 }
 
 export function renderPicture({ className, sources }) {
-  return renderTag('picture', { class: className }, sources);
+  return h('picture', { className }, sources);
 }
 
 export function renderImg({ srcSet, alt, className, loadingPolicy, style }) {
@@ -21,18 +21,18 @@ export function renderImg({ srcSet, alt, className, loadingPolicy, style }) {
     ? loadingPolicy
     : 'eager';
 
-  return renderTag('img', {
+  return h('img', {
     srcset: srcSet.map((s) => s.srcSet.join(' ')).join(', '),
     src: srcSet[0].srcSet[0],
-    alt: alt,
-    class: className,
+    alt,
+    className,
     loading,
     style,
-  });
+  })
 }
 
 export function renderSource({ srcSet, width }) {
-  return renderTag('source', {
+  return h('source', {
     srcset: srcSet.map((s) => s.srcSet.join(' ')).join(', '),
     media: `(min-width: ${width}px)`,
   });
@@ -66,7 +66,7 @@ export function renderFigure({ node, sources, options, bgImage, bgData }) {
   const sourceTags = srcSets
     .reverse()
     .filter(({ srcSet }) => srcSet.length > 0)
-    .map(({ width, srcSet }) => renderSource({ width, srcSet }));
+    .map(srcSet => renderSource(srcSet));
 
   const pictureTag = renderPicture({
     className: options.pictureClassName,
@@ -90,11 +90,11 @@ export function renderFigure({ node, sources, options, bgImage, bgData }) {
   }
 
   const bgTag = options.elasticContainer
-    ? renderTag('span', { style: elasticContainerStyle }, true)
+    ? h('span', { style: elasticContainerStyle })
     : undefined;
 
   const imageWrapper = options.elasticContainer
-    ? renderTag(
+    ? h(
         'span',
         {
           style: {
@@ -120,7 +120,7 @@ export function renderFigure({ node, sources, options, bgImage, bgData }) {
     debug('Render <figcaption> for node %o', node);
   }
 
-  return renderTag('figure', { class: options.figureClassName }, [
+  return h('figure', { class: options.figureClassName }, [
     options.elasticContainer ? imageWrapper : pictureTag,
     captionTag,
   ]);
