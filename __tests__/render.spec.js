@@ -139,28 +139,40 @@ describe('renderFigure()', () => {
     });
 
     expect(rendered.tagName).toBe('figure');
-    expect(rendered.properties.className).toContain(noElasticOptions.figureClassName);
+    expect(rendered.properties.className).toContain(
+      noElasticOptions.figureClassName
+    );
 
     const pictureTag = rendered.children[0];
     expect(pictureTag.tagName).toBe('picture');
-    expect(pictureTag.properties.className).toContain(noElasticOptions.pictureClassName);
+    expect(pictureTag.properties.className).toContain(
+      noElasticOptions.pictureClassName
+    );
 
     const sourceTag1 = pictureTag.children[0];
     expect(sourceTag1.tagName).toBe('source');
     expect(sourceTag1.properties.media).toBe('(min-width: 960px)');
-    expect(sourceTag1.properties.srcSet).toBe('foo-960.jpg, foo-1920.jpg 2x, foo-2880.jpg 3x');
+    expect(sourceTag1.properties.srcSet).toBe(
+      'foo-960.jpg, foo-1920.jpg 2x, foo-2880.jpg 3x'
+    );
 
     const sourceTag2 = pictureTag.children[1];
     expect(sourceTag2.tagName).toBe('source');
     expect(sourceTag2.properties.media).toBe('(min-width: 640px)');
-    expect(sourceTag2.properties.srcSet).toBe('foo-640.jpg, foo-1280.jpg 2x, foo-1920.jpg 3x');
+    expect(sourceTag2.properties.srcSet).toBe(
+      'foo-640.jpg, foo-1280.jpg 2x, foo-1920.jpg 3x'
+    );
 
     const imgTag = pictureTag.children[2];
     expect(imgTag.tagName).toBe('img');
-    expect(imgTag.properties.className).toContain(noElasticOptions.imgClassName);
+    expect(imgTag.properties.className).toContain(
+      noElasticOptions.imgClassName
+    );
     expect(imgTag.properties.alt).toBe('my alt');
     expect(imgTag.properties.src).toBe('foo-320.jpg');
-    expect(imgTag.properties.srcSet).toBe('foo-320.jpg, foo-640.jpg 2x, foo-960.jpg 3x');
+    expect(imgTag.properties.srcSet).toBe(
+      'foo-320.jpg, foo-640.jpg 2x, foo-960.jpg 3x'
+    );
   });
 
   it('should render image with elastic container', () => {
@@ -177,11 +189,13 @@ describe('renderFigure()', () => {
     const spanTag1 = rendered.children[0];
     expect(spanTag1.tagName).toBe('span');
     expect(spanTag1.properties.style).toContain('relative');
-    
+
     const spanTag2 = spanTag1.children[0];
     expect(spanTag2.tagName).toBe('span');
     expect(spanTag2.properties.style).toContain('relative');
-    expect(spanTag2.properties.style).toContain('padding-bottom: 149.9999999925%');
+    expect(spanTag2.properties.style).toContain(
+      'padding-bottom: 149.9999999925%'
+    );
 
     const imgTag = spanTag1.children[1].children[2];
     expect(imgTag.tagName).toBe('img');
@@ -207,8 +221,12 @@ describe('renderFigure()', () => {
     const spanTag2 = spanTag1.children[0];
     expect(spanTag2.tagName).toBe('span');
     expect(spanTag2.properties.style).toContain('relative');
-    expect(spanTag2.properties.style).toContain('padding-bottom: 149.9999999925%');
-    expect(spanTag2.properties.style).toContain('background-image: url(data:image/jpeg;base64,');
+    expect(spanTag2.properties.style).toContain(
+      'padding-bottom: 149.9999999925%'
+    );
+    expect(spanTag2.properties.style).toContain(
+      'background-image: url(data:image/jpeg;base64,'
+    );
 
     const imgTag = spanTag1.children[1].children[2];
     expect(imgTag.tagName).toBe('img');

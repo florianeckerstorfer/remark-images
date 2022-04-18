@@ -1,10 +1,10 @@
 import createDebug from 'debug';
-import {h} from 'hastscript';
+import { h } from 'hastscript';
 
 const debug = createDebug('RemarkResponsiveImages');
 
 export function renderCaption({ caption, className, processCaption }) {
-  return h('figcaption', { className}, processCaption(caption));
+  return h('figcaption', { className }, processCaption(caption));
 }
 
 export function renderPicture({ className, sources }) {
@@ -28,7 +28,7 @@ export function renderImg({ srcSet, alt, className, loadingPolicy, style }) {
     className,
     loading,
     style,
-  })
+  });
 }
 
 export function renderSource({ srcSet, width }) {
@@ -66,7 +66,7 @@ export function renderFigure({ node, sources, options, bgImage, bgData }) {
   const sourceTags = srcSets
     .reverse()
     .filter(({ srcSet }) => srcSet.length > 0)
-    .map(srcSet => renderSource(srcSet));
+    .map((srcSet) => renderSource(srcSet));
 
   const pictureTag = renderPicture({
     className: options.pictureClassName,
@@ -113,7 +113,7 @@ export function renderFigure({ node, sources, options, bgImage, bgData }) {
     ? renderCaption({
         caption: node.title,
         className: options.figCaptionClassName,
-        processCaption: options.processCaption
+        processCaption: options.processCaption,
       })
     : undefined;
   if (captionTag) {

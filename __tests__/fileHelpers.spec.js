@@ -23,7 +23,7 @@ describe('getFileNameInfo()', () => {
 
   it('should return empty strings for given empty string', () => {
     expect(getFileNameInfo('')).toEqual(['', '']);
-  })
+  });
 });
 
 describe('noTrailingSlash()', () => {

@@ -1,7 +1,7 @@
 import createDebug from 'debug';
 import path from 'path';
 import sharp from 'sharp';
-import {visitParents} from 'unist-util-visit-parents';
+import { visitParents } from 'unist-util-visit-parents';
 import DEFAULT_OPTIONS from './DEFAULT_OPTIONS.js';
 import { fileExists, noTrailingSlash } from './fileHelpers.js';
 import { generateImages } from './generateImages.js';
@@ -14,20 +14,16 @@ const debug = createDebug('RemarkResponsiveImages');
 function findMarkdownImageNodes(markdownAST) {
   const markdownImageNodes = [];
 
-  visitParents(
-    markdownAST,
-    ['image', 'imageReference'],
-    (node, ancestors) => {
-      const inLink = ancestors.some(findParentLinks);
+  visitParents(markdownAST, ['image', 'imageReference'], (node, ancestors) => {
+    const inLink = ancestors.some(findParentLinks);
 
-      if (node.url.match(/\.(png|jpe?g)$/)) {
-        debug('Found node - png/jpg image %O', node);
-        markdownImageNodes.push({ node, inLink });
-      } else {
-        debug('Found node - no png/jpg image → skipping %O', node);
-      }
+    if (node.url.match(/\.(png|jpe?g)$/)) {
+      debug('Found node - png/jpg image %O', node);
+      markdownImageNodes.push({ node, inLink });
+    } else {
+      debug('Found node - no png/jpg image → skipping %O', node);
     }
-  );
+  });
 
   return markdownImageNodes;
 }
@@ -83,7 +79,7 @@ function responsiveImages(pluginOptions) {
       images.forEach(({ node, sources, inLink, bgImage, bgData }) => {
         const figure = renderFigure({
           node,
-          sources: sources.filter(src => src.srcSet.length > 0),
+          sources: sources.filter((src) => src.srcSet.length > 0),
           inLink,
           bgImage,
           bgData,

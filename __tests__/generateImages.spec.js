@@ -62,7 +62,7 @@ describe('generateImage()', () => {
     expect(toFileMock).toHaveBeenCalledWith(targetFile);
   });
 
-  it('should create directory before generating images', async() => {
+  it('should create directory before generating images', async () => {
     const mkdirMock = jest.spyOn(fs, 'mkdirSync');
 
     existsMock.mockReturnValue(false);
@@ -82,8 +82,8 @@ describe('generateImage()', () => {
     const done = await generateImage({ sourceFile, targetFile, width, height });
 
     expect(mkdirMock).toHaveBeenCalledTimes(1);
-    expect(mkdirMock.mock.calls[0][0]).toBe('.')
-  })
+    expect(mkdirMock.mock.calls[0][0]).toBe('.');
+  });
 });
 
 describe('generateImages()', () => {

@@ -1,5 +1,5 @@
 import plugin from '../src';
-import {remark} from 'remark';
+import { remark } from 'remark';
 import html from 'remark-html';
 import path from 'path';
 import cheerio from 'cheerio';
