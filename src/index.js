@@ -76,7 +76,7 @@ function responsiveImages(pluginOptions) {
       });
 
     return Promise.all(promises).then((images) => {
-      images.forEach(({ node, sources, inLink, bgImage, bgData }) => {
+      images.map(({ node, sources, inLink, bgImage, bgData }) => {
         const figure = renderFigure({
           node,
           sources: sources.filter((src) => src.srcSet.length > 0),
@@ -85,7 +85,7 @@ function responsiveImages(pluginOptions) {
           bgData,
           options,
         });
-        node.type = 'hast';
+        node.type = 'element';
         node.value = figure;
       });
     });

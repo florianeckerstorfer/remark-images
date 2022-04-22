@@ -5,7 +5,7 @@ module.exports = (eleventyConfig) => {
   eleventyConfig.addPlugin(eleventyRemark, {
     plugins: [
       {
-        plugin: require('../../dist/remark-images.cjs'),
+        plugin: import('../../dist/remark-images.esm.js'),
         options: {
           srcDir: __dirname,
           targetDir: path.join(__dirname, '_site'),
