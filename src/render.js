@@ -1,5 +1,5 @@
 import createDebug from 'debug';
-import h from 'hastscript';
+import { h } from 'hastscript';
 
 const debug = createDebug('RemarkResponsiveImages');
 
@@ -33,7 +33,7 @@ export function renderImg({ srcSet, alt, className, loadingPolicy, style }) {
 
 export function renderSource({ srcSet, width }) {
   return h('source', {
-    srcset: srcSet.map((s) => s.srcSet.join(' ')).join(', '),
+    srcSet: srcSet.map((s) => s.srcSet.join(' ')).join(', '),
     media: `(min-width: ${width}px)`,
   });
 }

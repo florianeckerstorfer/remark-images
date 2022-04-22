@@ -1,4 +1,5 @@
 import json from '@rollup/plugin-json';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 import pkg from './package.json';
 
 export default [
@@ -8,7 +9,6 @@ export default [
       'sharp',
       'probe-image-size',
       'unist-util-visit-parents',
-      'hastscript',
       'fs',
       'path',
       'debug',
@@ -17,6 +17,6 @@ export default [
       { file: pkg.main, format: 'cjs', exports: 'default' },
       { file: pkg.module, format: 'esm' },
     ],
-    plugins: [json()],
+    plugins: [json(), nodeResolve()],
   },
 ];
