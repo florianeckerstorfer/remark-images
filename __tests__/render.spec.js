@@ -73,7 +73,7 @@ describe('renderImg()', () => {
     expect(rendered.properties.loading).toBe('eager');
     expect(rendered.properties.alt).toBe('My alt');
     expect(rendered.properties.src).toBe('foo-320.jpg');
-    expect(rendered.properties.srcSet).toBe('foo-320.jpg');
+    expect(rendered.properties.srcSet).toContain('foo-320.jpg');
   });
 
   it('should render img with loading policy', () => {
@@ -115,7 +115,8 @@ describe('renderSource()', () => {
 
     expect(rendered.tagName).toBe('source');
     expect(rendered.properties.media).toBe('(min-width: 640px)');
-    expect(rendered.properties.srcSet).toBe('foo-1280.jpg 2x, foo-640.jpg');
+    expect(rendered.properties.srcSet).toContain('foo-1280.jpg 2x');
+    expect(rendered.properties.srcSet).toContain('foo-640.jpg');
   });
 });
 
@@ -152,16 +153,16 @@ describe('renderFigure()', () => {
     const sourceTag1 = pictureTag.children[0];
     expect(sourceTag1.tagName).toBe('source');
     expect(sourceTag1.properties.media).toBe('(min-width: 960px)');
-    expect(sourceTag1.properties.srcSet).toBe(
-      'foo-960.jpg, foo-1920.jpg 2x, foo-2880.jpg 3x'
-    );
+    expect(sourceTag1.properties.srcSet).toContain('foo-960.jpg');
+    expect(sourceTag1.properties.srcSet).toContain('foo-1920.jpg 2x');
+    expect(sourceTag1.properties.srcSet).toContain('foo-2880.jpg 3x');
 
     const sourceTag2 = pictureTag.children[1];
     expect(sourceTag2.tagName).toBe('source');
     expect(sourceTag2.properties.media).toBe('(min-width: 640px)');
-    expect(sourceTag2.properties.srcSet).toBe(
-      'foo-640.jpg, foo-1280.jpg 2x, foo-1920.jpg 3x'
-    );
+    expect(sourceTag2.properties.srcSet).toContain('foo-640.jpg');
+    expect(sourceTag2.properties.srcSet).toContain('foo-1280.jpg 2x');
+    expect(sourceTag2.properties.srcSet).toContain('foo-1920.jpg 3x');
 
     const imgTag = pictureTag.children[2];
     expect(imgTag.tagName).toBe('img');
@@ -170,9 +171,9 @@ describe('renderFigure()', () => {
     );
     expect(imgTag.properties.alt).toBe('my alt');
     expect(imgTag.properties.src).toBe('foo-320.jpg');
-    expect(imgTag.properties.srcSet).toBe(
-      'foo-320.jpg, foo-640.jpg 2x, foo-960.jpg 3x'
-    );
+    expect(imgTag.properties.srcSet).toContain('foo-320.jpg');
+    expect(imgTag.properties.srcSet).toContain('foo-640.jpg 2x');
+    expect(imgTag.properties.srcSet).toContain('foo-960.jpg 3x');
   });
 
   it('should render image with elastic container', () => {

@@ -1,5 +1,5 @@
 import createDebug from 'debug';
-import { h } from 'hastscript';
+import h from 'hastscript';
 
 const debug = createDebug('RemarkResponsiveImages');
 
@@ -109,6 +109,8 @@ export function renderFigure({ node, sources, options, bgImage, bgData }) {
       )
     : undefined;
 
+  const figureChildren = [options.elasticContainer ? imageWrapper : pictureTag];
+
   const captionTag = node.title
     ? renderCaption({
         caption: node.title,
@@ -118,10 +120,8 @@ export function renderFigure({ node, sources, options, bgImage, bgData }) {
     : undefined;
   if (captionTag) {
     debug('Render <figcaption> for node %o', node);
+    figureChildren.push(captionTag);
   }
 
-  return h('figure', { class: options.figureClassName }, [
-    options.elasticContainer ? imageWrapper : pictureTag,
-    captionTag,
-  ]);
+  return h('figure', { class: options.figureClassName }, figureChildren);
 }

@@ -1,7 +1,7 @@
 import createDebug from 'debug';
 import path from 'path';
 import sharp from 'sharp';
-import { visitParents } from 'unist-util-visit-parents';
+import visitParents from 'unist-util-visit-parents';
 import DEFAULT_OPTIONS from './DEFAULT_OPTIONS.js';
 import { fileExists, noTrailingSlash } from './fileHelpers.js';
 import { generateImages } from './generateImages.js';
