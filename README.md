@@ -119,6 +119,11 @@ This project is licensed under the [MIT License](LICENSE.md).
 
 ## Change log
 
+### Version 0.7.3-alpha (April 23, 2021)
+
+- Use HAST instead of raw HTML
+- Bump minimum supported Node.js version to 14.x
+
 ### Version 0.6.0-alpha (November 15, 2021)
 
 - [#13](https://github.com/florianeckerstorfer/remark-images/pull/13) Remove empty `srcSet` from generated HTML (by [joostdecock](https://github.com/florianeckerstorfer/remark-images/commits?author=joostdecock))
