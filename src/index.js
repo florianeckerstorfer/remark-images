@@ -29,6 +29,7 @@ function findMarkdownImageNodes(markdownAST) {
 }
 
 function responsiveImages(pluginOptions) {
+  const data = this.data();
   const options = { ...DEFAULT_OPTIONS, ...pluginOptions };
 
   options.srcDir = noTrailingSlash(options.srcDir);
@@ -49,13 +50,17 @@ function responsiveImages(pluginOptions) {
               fileName: node.url,
               widths: options.imageSizes,
               resolutions: options.resolutions,
+              data,
+              processTargetFileName: options.processTargetFileName,
             })
           ).then((sources) => {
             generateImages({
+              data,
               srcSets: sources,
               srcDir: options.srcDir,
               sourceFile: node.url,
               targetDir: options.targetDir,
+              processTargetFileName: options.processTargetFileName,
             }).then((generatedImages) => {
               const sourceFile = path.join(options.srcDir, node.url);
               sharp(sourceFile)
