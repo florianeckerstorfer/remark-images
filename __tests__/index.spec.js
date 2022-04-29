@@ -86,7 +86,7 @@ describe('remark-images', () => {
     expect(result('img').attr('alt')).toBe('My image');
   });
 
-  it.only('should use result processTargetFileName() option for file name', async () => {
+  it('should use result processTargetFileName() option for file name', async () => {
     const processTargetFileName = (targetFile, data) =>
       targetFile.replace(data.search, data.replace);
     const thisProcessor = remark()
