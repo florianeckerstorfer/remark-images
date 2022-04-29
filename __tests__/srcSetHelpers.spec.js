@@ -11,8 +11,12 @@ const srcDir = 'site';
 const fileName = 'foo.jpg';
 const width = 320;
 const resolutions = [1, 2];
+const data = {};
 
 describe('getSrcSet()', () => {
+  const processTargetFileName = jest.fn();
+  processTargetFileName.mockImplementation(targetFile => targetFile);
+
   beforeEach(() => {
     jest.clearAllMocks();
 
@@ -24,7 +28,7 @@ describe('getSrcSet()', () => {
   });
 
   it('should return src set for multiple resolutions', async () => {
-    const srcSet = await getSrcSet({ srcDir, fileName, width, resolutions });
+    const srcSet = await getSrcSet({ srcDir, fileName, width, resolutions, data, processTargetFileName });
 
     expect(srcSet[0].srcSet).toEqual(['foo-320.jpg']);
     expect(srcSet[1].srcSet).toEqual(['foo-640.jpg', '2x']);
@@ -32,6 +36,9 @@ describe('getSrcSet()', () => {
 });
 
 describe('getSrcSets()', () => {
+  const processTargetFileName = jest.fn();
+  processTargetFileName.mockImplementation(targetFile => targetFile);
+
   jest.spyOn(FileHelpers, 'getFileNameInfo').mockReturnValue(['foo', 'jpg']);
 
   beforeEach(() => {
@@ -41,7 +48,7 @@ describe('getSrcSets()', () => {
   it('should return array of src sets', async () => {
     const widths = [320, 640, 960];
     const srcSets = await Promise.all(
-      getSrcSets({ srcDir, fileName, widths, resolutions })
+      getSrcSets({ srcDir, fileName, widths, resolutions, data, processTargetFileName })
     );
 
     expect(srcSets[0].width).toBe(320);

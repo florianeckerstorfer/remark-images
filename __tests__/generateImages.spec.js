@@ -107,6 +107,8 @@ describe('generateImages()', () => {
 
   it('should generate all images in srcSet', async () => {
     jest.spyOn(FileHelpers, 'isNewerFile').mockReturnValue(true);
+    const processTargetFileName = jest.fn();
+    processTargetFileName.mockImplementation(targetFile => targetFile);
 
     const srcDir = path.dirname(__dirname, 'fixtures');
     const targetDir = 'test/target';
@@ -115,6 +117,7 @@ describe('generateImages()', () => {
       sourceFile: 'foo.jpg',
       srcDir,
       targetDir,
+      processTargetFileName,
     });
 
     expect(done).toBe(6);
@@ -137,6 +140,9 @@ describe('generateImages()', () => {
   });
 
   it('should only generate images that do not exist yet', async () => {
+    const processTargetFileName = jest.fn();
+    processTargetFileName.mockImplementation(targetFile => targetFile);
+
     const isNewerFileMock = jest.spyOn(FileHelpers, 'isNewerFile');
     isNewerFileMock.mockReturnValueOnce(true);
     isNewerFileMock.mockReturnValueOnce(false);
@@ -152,6 +158,7 @@ describe('generateImages()', () => {
       sourceFile: 'foo.jpg',
       srcDir,
       targetDir,
+      processTargetFileName,
     });
 
     expect(done).toBe(3);
@@ -160,5 +167,33 @@ describe('generateImages()', () => {
     expect(toFileMock.mock.calls[0][0]).toBe(`${targetDir}/foo-320.jpg`);
     expect(toFileMock.mock.calls[1][0]).toBe(`${targetDir}/foo-1280.jpg`);
     expect(toFileMock.mock.calls[2][0]).toBe(`${targetDir}/foo-2880.jpg`);
+  });
+
+  it('should use file name returned by processTargetFileName option', async () => {
+    const processTargetFileName = jest.fn();
+    processTargetFileName.mockImplementation(targetFile => targetFile.replace('foo', 'bar'));
+
+    jest.spyOn(FileHelpers, 'isNewerFile').mockReturnValue(true);
+
+    const srcDir = path.dirname(__dirname, 'fixtures');
+    const targetDir = 'test/target';
+    const done = await generateImages({
+      srcSets: srcSetFixture,
+      sourceFile: 'foo.jpg',
+      srcDir,
+      targetDir,
+      processTargetFileName,
+    });
+
+    expect(done).toBe(6);
+
+    expect(resizeMock).toHaveBeenCalledTimes(6);
+    expect(toFileMock).toHaveBeenCalledTimes(6);
+    expect(toFileMock.mock.calls[0][0]).toBe(`${targetDir}/bar-320.jpg`);
+    expect(toFileMock.mock.calls[1][0]).toBe(`${targetDir}/bar-640.jpg`);
+    expect(toFileMock.mock.calls[2][0]).toBe(`${targetDir}/bar-960.jpg`);
+    expect(toFileMock.mock.calls[3][0]).toBe(`${targetDir}/bar-1280.jpg`);
+    expect(toFileMock.mock.calls[4][0]).toBe(`${targetDir}/bar-1920.jpg`);
+    expect(toFileMock.mock.calls[5][0]).toBe(`${targetDir}/bar-2880.jpg`);
   });
 });

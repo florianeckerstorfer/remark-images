@@ -21,9 +21,6 @@ const input = `
 ![My GIF image](foo.gif)
 `;
 
-console.log('INPUT', input);
-
 processor.process(input, (_, file) => {
-  console.log('OUTPUT');
   console.log(String(file));
 });
