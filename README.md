@@ -119,7 +119,11 @@ This project is licensed under the [MIT License](LICENSE.md).
 
 ## Change log
 
-### Version 0.7.3-alpha (April 23, 2021)
+### Version 0.8.0 (April 29, 2022)
+
+- Add callback to process target file names
+
+### Version 0.7.3-alpha (April 23, 2022)
 
 - Use HAST instead of raw HTML
 - Bump minimum supported Node.js version to 14.x
