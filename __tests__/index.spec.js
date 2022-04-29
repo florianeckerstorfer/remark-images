@@ -85,4 +85,26 @@ describe('remark-images', () => {
     expect(result('img').attr('src')).toBe('foo.gif');
     expect(result('img').attr('alt')).toBe('My image');
   });
+
+  it('should use result processTargetFileName() option for file name', async () => {
+    const processTargetFileName = (targetFile, data) =>
+      targetFile.replace(data.search, data.replace);
+    const thisProcessor = remark()
+      .use(html, { sanitize: false })
+      .use([[plugin, { ...options, processTargetFileName }]]);
+
+    const input = '![My image](foo.jpg)';
+
+    const output = await thisProcessor
+      .data({ search: 'foo', replace: 'bar' })
+      .process(input);
+    const result = cheerio.load(String(output));
+    expect(result('figure').length).toBe(1);
+    expect(result('picture').length).toBe(1);
+    expect(result('source').length).toBe(2);
+    expect(result('img').length).toBe(1);
+    expect(result('img').attr('src')).toContain('bar-320.jpg');
+    expect(result('img').attr('alt')).toBe('My image');
+    expect(result('figcaption').length).toBe(0);
+  });
 });

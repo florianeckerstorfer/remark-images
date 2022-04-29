@@ -10,7 +10,7 @@ export function getHeightFromWidth(width, source) {
   return Math.ceil((width / source.width) * source.height);
 }
 
-export async function getSrcSet({ srcDir, fileName, width, resolutions }) {
+export async function getSrcSet({ srcDir, fileName, width, resolutions, data, processTargetFileName }) {
   const [base, extension] = getFileNameInfo(fileName);
 
   const size = await probeImageSize(
@@ -23,7 +23,7 @@ export async function getSrcSet({ srcDir, fileName, width, resolutions }) {
       const intrinsicHeight = getHeightFromWidth(intrinsicWidth, size);
       const aspectRatio = intrinsicWidth / intrinsicHeight;
       return {
-        src: `${base}-${intrinsicWidth}.${extension}`,
+        src: processTargetFileName(`${base}-${intrinsicWidth}.${extension}`, data),
         intrinsicWidth,
         intrinsicHeight,
         aspectRatio,
@@ -48,7 +48,7 @@ export async function getSrcSet({ srcDir, fileName, width, resolutions }) {
     }));
 }
 
-export function getSrcSets({ srcDir, fileName, widths, resolutions }) {
+export function getSrcSets({ srcDir, fileName, widths, resolutions, data, processTargetFileName }) {
   const sortedResolutions = [...resolutions].sort();
   const sortedWidths = [...widths].sort();
 
@@ -59,6 +59,8 @@ export function getSrcSets({ srcDir, fileName, widths, resolutions }) {
         fileName,
         width,
         resolutions: sortedResolutions,
+        data,
+        processTargetFileName
       }).then((srcSet) => {
         resolve({
           aspectRatio: (srcSet[0] || {}).aspectRatio || 0,
