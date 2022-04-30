@@ -51,16 +51,14 @@ function responsiveImages(pluginOptions) {
               widths: options.imageSizes,
               resolutions: options.resolutions,
               data,
-              processTargetFileName: options.processTargetFileName,
+              transformTargetFileName: options.transformTargetFileName,
             })
           ).then((sources) => {
             generateImages({
-              data,
               srcSets: sources,
               srcDir: options.srcDir,
               sourceFile: node.url,
               targetDir: options.targetDir,
-              processTargetFileName: options.processTargetFileName,
             }).then((generatedImages) => {
               const sourceFile = path.join(options.srcDir, node.url);
               sharp(sourceFile)

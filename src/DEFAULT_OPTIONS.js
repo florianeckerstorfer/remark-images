@@ -11,7 +11,7 @@ const DEFAULT_OPTIONS = {
   elasticContainer: true,
   blurredBackground: true,
   processCaption: (caption) => caption,
-  processTargetFileName: (targetFile, data) => targetFile,
+  transformTargetFileName: (targetFile, data) => targetFile,
 };
 
 export default DEFAULT_OPTIONS;
