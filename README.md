@@ -120,6 +120,11 @@ This project is licensed under the [MIT License](LICENSE.md).
 
 ## Change log
 
+### Verison 0.8.1 (April 30, 2022)
+
+- Fix how target file names are transformed
+- Rename `processTargetFileName` option to `transformTargetFileName`
+
 ### Version 0.8.0 (April 29, 2022)
 
 - Add callback to process target file names
