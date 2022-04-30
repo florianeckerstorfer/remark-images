@@ -30,13 +30,11 @@ export async function generateImages({
   srcDir,
   targetDir,
   sourceFile,
-  data,
-  processTargetFileName,
 }) {
   const addDirToFiles = (image) => ({
     width: image.width,
     sourceFile: path.join(srcDir, image.sourceFile),
-    targetFile: processTargetFileName(path.join(targetDir, image.targetFile), data),
+    targetFile: path.join(targetDir, image.targetFile),
   });
 
   const images = [];

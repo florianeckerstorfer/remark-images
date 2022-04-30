@@ -86,12 +86,12 @@ describe('remark-images', () => {
     expect(result('img').attr('alt')).toBe('My image');
   });
 
-  it('should use result processTargetFileName() option for file name', async () => {
-    const processTargetFileName = (targetFile, data) =>
+  it('should use result transformTargetFileName() option for file name', async () => {
+    const transformTargetFileName = (targetFile, data) =>
       targetFile.replace(data.search, data.replace);
     const thisProcessor = remark()
       .use(html, { sanitize: false })
-      .use([[plugin, { ...options, processTargetFileName }]]);
+      .use([[plugin, { ...options, transformTargetFileName }]]);
 
     const input = '![My image](foo.jpg)';
 
