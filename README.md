@@ -58,21 +58,21 @@ const processor = remark().use([[images, options]]);
 
 ### Options
 
-| Option                | Default value          | Description                                                                               |
-| --------------------- | ---------------------- | ----------------------------------------------------------------------------------------- |
-| `figureClassName`     | `remarkri--figure`     | Name of CSS class for `figure` tag                                                        |
-| `pictureClassName`    | `remarkri--picture`    | Name of CSS class for `picture` tag                                                       |
-| `imgClassName`        | `remarkri--img`        | Name of CSS class for `img` tag                                                           |
-| `figCaptionClassName` | `remarkri--figcaption` | Name of CSS class for `figcaption` tag                                                    |
-| `resolutions`         | `[1, 2, 3]`            | Resolutions that should be generated                                                      |
-| `imageSizes`          | `[320, 640, 960]`      | Width of the generated images                                                             |
-| `srcDir`              | `.`                    | Directory where to look for images                                                        |
-| `targetDir`           | `.`                    | Directory where to save generated images                                                  |
-| `loadingPolicy`       | `"eager"`              | Sets the `loading` attribute on `<img>`, `"lazy"` to load images when they become visible |
-| `elasticContainer`    | `true`                 | Insert elastic container to avoid layout jumps when the image loads                       |
-| `blurredBackground`   | `true`                 | Add a blurred background while the image is loading                                       |
-| `processCaption`      | `(caption) => caption` | Define a function to process image caption, eg. convert markdown to HTML                  |
-| `transformTargetFileName` | `(fileName, data) => fileName` | Define a function to transform the target file name                   |
+| Option                    | Default value                  | Description                                                                               |
+| ------------------------- | ------------------------------ | ----------------------------------------------------------------------------------------- |
+| `figureClassName`         | `remarkri--figure`             | Name of CSS class for `figure` tag                                                        |
+| `pictureClassName`        | `remarkri--picture`            | Name of CSS class for `picture` tag                                                       |
+| `imgClassName`            | `remarkri--img`                | Name of CSS class for `img` tag                                                           |
+| `figCaptionClassName`     | `remarkri--figcaption`         | Name of CSS class for `figcaption` tag                                                    |
+| `resolutions`             | `[1, 2, 3]`                    | Resolutions that should be generated                                                      |
+| `imageSizes`              | `[320, 640, 960]`              | Width of the generated images                                                             |
+| `srcDir`                  | `.`                            | Directory where to look for images                                                        |
+| `targetDir`               | `.`                            | Directory where to save generated images                                                  |
+| `loadingPolicy`           | `"eager"`                      | Sets the `loading` attribute on `<img>`, `"lazy"` to load images when they become visible |
+| `elasticContainer`        | `true`                         | Insert elastic container to avoid layout jumps when the image loads                       |
+| `blurredBackground`       | `true`                         | Add a blurred background while the image is loading                                       |
+| `processCaption`          | `(caption) => caption`         | Define a function to process image caption, eg. convert markdown to HTML                  |
+| `transformTargetFileName` | `(fileName, data) => fileName` | Define a function to transform the target file name                                       |
 
 #### Process Caption
 
@@ -120,7 +120,11 @@ This project is licensed under the [MIT License](LICENSE.md).
 
 ## Change log
 
-### Verison 0.8.1 (April 30, 2022)
+### Version 0.8.2 (August 4, 2023)
+
+- Update sharp to 0.32.4
+
+### Versiion 0.8.1 (April 30, 2022)
 
 - Fix how target file names are transformed
 - Rename `processTargetFileName` option to `transformTargetFileName`
