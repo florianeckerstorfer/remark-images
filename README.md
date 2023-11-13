@@ -120,6 +120,11 @@ This project is licensed under the [MIT License](LICENSE.md).
 
 ## Change log
 
+### Version 0.9.0 (November 13, 2023)
+
+- Update dependencies
+- Update test matrix to Node 16.x, 17.x, 18.x, 19.x, and 20.x
+
 ### Version 0.8.2 (August 4, 2023)
 
 - Update sharp to 0.32.4
