@@ -1,6 +1,6 @@
 {
   "name": "@fec/remark-images",
-  "version": "0.8.2",
+  "version": "0.9.0",
   "description": "Remark plugin to generate responsive images.",
   "main": "dist/remark-images.cjs.js",
   "module": "dist/remark-images.esm.js",
