@@ -4,3 +4,4 @@ node_modules/
 coverage/
 dist/
 __tests__/fixtures-target
+__tests__/fixtures-target-integration
