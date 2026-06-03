@@ -1,6 +1,7 @@
 import json from '@rollup/plugin-json';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
-import pkg from './package.json';
+import { createRequire } from 'module';
+const pkg = createRequire(import.meta.url)('./package.json');
 
 export default [
   {
