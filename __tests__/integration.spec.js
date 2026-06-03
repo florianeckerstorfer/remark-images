@@ -17,22 +17,18 @@ describe('remark-images integration', () => {
       .use([[plugin, { ...baseOptions, ...options }]]);
   }
 
+  const cleanupTargetDir = () => {
+    if (!fs.existsSync(targetDir)) return;
+    fs.readdirSync(targetDir).forEach((f) => fs.unlinkSync(path.join(targetDir, f)));
+    fs.rmdirSync(targetDir);
+  };
+
   beforeEach(() => {
-    if (fs.existsSync(targetDir)) {
-      fs.readdirSync(targetDir).forEach((f) =>
-        fs.unlinkSync(path.join(targetDir, f))
-      );
-      fs.rmdirSync(targetDir);
-    }
+    cleanupTargetDir();
   });
 
   afterAll(() => {
-    if (fs.existsSync(targetDir)) {
-      fs.readdirSync(targetDir).forEach((f) =>
-        fs.unlinkSync(path.join(targetDir, f))
-      );
-      fs.rmdirSync(targetDir);
-    }
+    cleanupTargetDir();
   });
 
   describe('generated image files on disk', () => {
