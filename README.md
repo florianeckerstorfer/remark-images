@@ -8,13 +8,14 @@ Made by 👨‍💻[Florian Eckerstorfer](https://florian.ec) in beautiful 🎡 
 
 ## Table of Contents
 
-1. [Installation](#installation)
-2. [Configuration](#configuration)
-3. [Debugging](#debugging)
-4. [Contributing](#contributing)
-5. [Code of Conduct](#code-of-conduct)
-6. [License](#license)
-7. [Change log](#change-log)
+1. [Requirements](#requirements)
+2. [Installation](#installation)
+3. [Configuration](#configuration)
+4. [Debugging](#debugging)
+5. [Contributing](#contributing)
+6. [Code of Conduct](#code-of-conduct)
+7. [License](#license)
+8. [Change log](#change-log)
 
 ## Features
 
@@ -22,6 +23,13 @@ Made by 👨‍💻[Florian Eckerstorfer](https://florian.ec) in beautiful 🎡 
 - Inserts `<source>` tags and `srcset`
 - Adds an elastic container to avoid layout jumps
 - Show a blurred version of the image while it is loading
+
+## Requirements
+
+- Node.js 20 or later
+- [remark](https://remark.js.org/) 15 or later
+
+> **Note:** This package is ESM-only. It cannot be loaded with `require()`. Your project must use `import` syntax or a bundler that supports ESM.
 
 ## Installation
 
@@ -37,8 +45,8 @@ yarn add @fec/remark-images
 You can use `@fec/remark-images` like any other Remark plugin:
 
 ```javascript
-const remark = require('remark');
-const images = require('@fec/remark-images');
+import { remark } from 'remark';
+import images from '@fec/remark-images';
 
 const processor = remark().use(images);
 ```
@@ -46,8 +54,8 @@ const processor = remark().use(images);
 `@fec/remark-images` gives you some options to customise its behaviour:
 
 ```javascript
-const remark = require('remark');
-const images = require('@fec/remark-images');
+import { remark } from 'remark';
+import images from '@fec/remark-images';
 
 const processor = remark().use([[images, options]]);
 ```
@@ -79,8 +87,8 @@ const processor = remark().use([[images, options]]);
 If you're using markdown in the image captions, you can define a custom function to process the caption before it renders (by default it won't process the caption). Eg.
 
 ```js
-const remark = require('remark');
-const html = require('remark-html');
+import { remark } from 'remark';
+import html from 'remark-html';
 
 const processCaption = (markdown) => {
   return remark().use(html).processSync(markdown).toString();
