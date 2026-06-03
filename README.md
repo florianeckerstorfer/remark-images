@@ -29,6 +29,8 @@ Made by 👨‍💻[Florian Eckerstorfer](https://florian.ec) in beautiful 🎡 
 - Node.js 20 or later
 - [remark](https://remark.js.org/) 15 or later
 
+> **Note:** This package is ESM-only. It cannot be loaded with `require()`. Your project must use `import` syntax or a bundler that supports ESM.
+
 ## Installation
 
 You need to install `@fec/remark-images` with NPM or Yarn. Since this is a plugin for Remark, I assume you already have Remark installed and configured.
