@@ -4,7 +4,9 @@
   "description": "Remark plugin to generate responsive images.",
   "type": "module",
   "exports": {
-    ".": "./dist/remark-images.js"
+    ".": {
+      "import": "./dist/remark-images.js"
+    }
   },
   "scripts": {
     "test": "jest",
