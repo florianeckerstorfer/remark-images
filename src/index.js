@@ -89,6 +89,7 @@ function responsiveImages(pluginOptions) {
           options,
         });
         node.data = {
+          ...(node.data || {}),
           hName: figure.tagName,
           hProperties: figure.properties,
           hChildren: figure.children,
