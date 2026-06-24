@@ -224,6 +224,60 @@ describe('remark-images integration', () => {
     });
   });
 
+  describe('manifest', () => {
+    const manifestPath = path.join(__dirname, 'fixtures-target-integration', 'test-manifest.json');
+
+    it('manifest is created after processing', async () => {
+      await makeProcessor({ manifest: manifestPath }).process('![Alt](foo.jpg)');
+
+      expect(fs.existsSync(manifestPath)).toBe(true);
+      const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+      expect(manifest.images['foo.jpg']).toBeDefined();
+      expect(typeof manifest.images['foo.jpg'].sourceHash).toBe('string');
+      expect(Array.isArray(manifest.images['foo.jpg'].files)).toBe(true);
+      expect(manifest.images['foo.jpg'].files.length).toBeGreaterThan(0);
+    });
+
+    it('cache hit skips image regeneration', async () => {
+      // First run: generate files and write manifest
+      await makeProcessor({ manifest: manifestPath }).process('![Alt](foo.jpg)');
+      expect(fs.existsSync(manifestPath)).toBe(true);
+
+      // Second run: files exist + manifest matches → cache hit, no regeneration
+      // The manifest should still exist and have the same content
+      const manifestBefore = fs.readFileSync(manifestPath, 'utf8');
+      await makeProcessor({ manifest: manifestPath }).process('![Alt](foo.jpg)');
+      const manifestAfter = fs.readFileSync(manifestPath, 'utf8');
+
+      // manifest content unchanged because no manifestUpdates were written (cache hit)
+      expect(manifestAfter).toBe(manifestBefore);
+    });
+
+    it('manifest: false disables the manifest', async () => {
+      const defaultManifestPath = path.resolve('remark-images-manifest.json');
+      const cleanupDefault = () => {
+        if (fs.existsSync(defaultManifestPath)) fs.unlinkSync(defaultManifestPath);
+      };
+      cleanupDefault();
+
+      await makeProcessor({ manifest: false }).process('![Alt](foo.jpg)');
+
+      expect(fs.existsSync(manifestPath)).toBe(false);
+      expect(fs.existsSync(defaultManifestPath)).toBe(false);
+      cleanupDefault();
+    });
+
+    it('custom manifest path creates the file at that path', async () => {
+      const customManifest = path.join(__dirname, 'fixtures-target-integration', 'custom-manifest.json');
+      await makeProcessor({ manifest: customManifest }).process('![Alt](foo.jpg)');
+
+      expect(fs.existsSync(customManifest)).toBe(true);
+      const manifest = JSON.parse(fs.readFileSync(customManifest, 'utf8'));
+      expect(manifest.version).toBe(1);
+      expect(manifest.images['foo.jpg']).toBeDefined();
+    });
+  });
+
   describe('PNG image support', () => {
     const pngFixture = path.join(fixturesDir, 'test-integration.png');
 
