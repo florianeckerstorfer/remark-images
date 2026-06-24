@@ -85,7 +85,7 @@ const processor = remark().use([[images, options]]);
 
 #### Manifest-based image cache
 
-The plugin writes a JSON manifest file after generating images. On the next build, if the source image hash and all generated files on disk match the manifest entry, sharp processing is skipped entirely for that image. This allows CI pipelines to cache the `targetDir` between runs and avoid regenerating unchanged images.
+The plugin writes a JSON manifest file after generating images. On the next build, if the source image hash and all generated files on disk match the manifest entry, processing is skipped entirely for that image. This allows CI pipelines to cache the `targetDir` between runs and avoid regenerating unchanged images.
 
 Set `manifest: false` to disable this behaviour entirely.
 
