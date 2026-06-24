@@ -13,9 +13,15 @@ export function readManifest(manifestPath) {
   }
   try {
     const raw = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-    return raw.version === MANIFEST_VERSION
-      ? raw
-      : { version: MANIFEST_VERSION, images: {} };
+    if (
+      raw.version === MANIFEST_VERSION &&
+      raw.images &&
+      typeof raw.images === 'object' &&
+      !Array.isArray(raw.images)
+    ) {
+      return raw;
+    }
+    return { version: MANIFEST_VERSION, images: {} };
   } catch {
     return { version: MANIFEST_VERSION, images: {} };
   }

@@ -66,6 +66,22 @@ describe('readManifest()', () => {
     const result = readManifest('/manifest.json');
     expect(result).toEqual({ version: MANIFEST_VERSION, images: {} });
   });
+
+  it('file exists, valid version but missing images → returns empty manifest', () => {
+    fs.existsSync.mockReturnValue(true);
+    fs.readFileSync.mockReturnValue(JSON.stringify({ version: MANIFEST_VERSION }));
+    const result = readManifest('/manifest.json');
+    expect(result).toEqual({ version: MANIFEST_VERSION, images: {} });
+  });
+
+  it('file exists, valid version but images is not a plain object → returns empty manifest', () => {
+    fs.existsSync.mockReturnValue(true);
+    fs.readFileSync.mockReturnValue(
+      JSON.stringify({ version: MANIFEST_VERSION, images: ['foo.jpg'] })
+    );
+    const result = readManifest('/manifest.json');
+    expect(result).toEqual({ version: MANIFEST_VERSION, images: {} });
+  });
 });
 
 describe('writeManifest()', () => {

@@ -50,7 +50,7 @@ describe('generateImage()', () => {
       size: 17986,
     });
 
-    const sourceFile = path.dirname(__dirname, 'fixtures', 'foo.jpg');
+    const sourceFile = path.join(__dirname, 'fixtures', 'foo.jpg');
     const targetFile = './test-florian.jpg';
     const width = 320;
     const height = 214;
@@ -77,7 +77,7 @@ describe('generateImage()', () => {
       size: 17986,
     });
 
-    const sourceFile = path.dirname(__dirname, 'fixtures', 'foo.jpg');
+    const sourceFile = path.join(__dirname, 'fixtures', 'foo.jpg');
     const targetFile = './test-florian.jpg';
     const width = 320;
     const height = 214;
@@ -112,7 +112,7 @@ describe('generateImages()', () => {
     const processTargetFileName = jest.fn();
     processTargetFileName.mockImplementation(targetFile => targetFile);
 
-    const srcDir = path.dirname(__dirname, 'fixtures');
+    const srcDir = path.join(__dirname, 'fixtures');
     const targetDir = 'test/target';
     const done = await generateImages({
       srcSets: srcSetFixture,
@@ -153,7 +153,7 @@ describe('generateImages()', () => {
     isNewerFileMock.mockReturnValueOnce(false);
     isNewerFileMock.mockReturnValueOnce(true);
 
-    const srcDir = path.dirname(__dirname, 'fixtures');
+    const srcDir = path.join(__dirname, 'fixtures');
     const targetDir = 'test/target';
     const done = await generateImages({
       srcSets: srcSetFixture,
@@ -180,7 +180,7 @@ describe('generateImages() with manifest', () => {
   const sharpReturn = { resize: resizeMock, toFile: toFileMock };
   const hashFileMock = jest.spyOn(ManifestHelpers, 'hashFile');
 
-  const srcDir = path.dirname(__dirname, 'fixtures');
+  const srcDir = path.join(__dirname, 'fixtures');
   const targetDir = 'test/target';
 
   beforeEach(() => {
@@ -267,6 +267,62 @@ describe('generateImages() with manifest', () => {
         'foo.jpg': {
           sourceHash: 'different-hash',
           files: ['foo-320.jpg', 'foo-640.jpg', 'foo-960.jpg', 'foo-1280.jpg', 'foo-1920.jpg', 'foo-2880.jpg'],
+        },
+      },
+    };
+
+    const done = await generateImages({
+      srcSets: srcSetFixture,
+      sourceFile: 'foo.jpg',
+      srcDir,
+      targetDir,
+      manifest,
+    });
+
+    expect(done.count).toBe(6);
+    expect(done.manifestEntry).toEqual({
+      sourceHash: 'abc123',
+      files: ['foo-320.jpg', 'foo-640.jpg', 'foo-960.jpg', 'foo-1280.jpg', 'foo-1920.jpg', 'foo-2880.jpg'],
+    });
+  });
+
+  it('cache miss – recorded files are a subset of expected files (options changed) → regenerates', async () => {
+    jest.spyOn(FileHelpers, 'fileExists').mockReturnValue(true);
+
+    const manifest = {
+      version: 1,
+      images: {
+        'foo.jpg': {
+          sourceHash: 'abc123',
+          files: ['foo-320.jpg', 'foo-640.jpg'],
+        },
+      },
+    };
+
+    const done = await generateImages({
+      srcSets: srcSetFixture,
+      sourceFile: 'foo.jpg',
+      srcDir,
+      targetDir,
+      manifest,
+    });
+
+    expect(done.count).toBe(6);
+    expect(done.manifestEntry).toEqual({
+      sourceHash: 'abc123',
+      files: ['foo-320.jpg', 'foo-640.jpg', 'foo-960.jpg', 'foo-1280.jpg', 'foo-1920.jpg', 'foo-2880.jpg'],
+    });
+  });
+
+  it('cache miss – entry.files is not an array → regenerates without throwing', async () => {
+    jest.spyOn(FileHelpers, 'fileExists').mockReturnValue(true);
+
+    const manifest = {
+      version: 1,
+      images: {
+        'foo.jpg': {
+          sourceHash: 'abc123',
+          files: 'foo-320.jpg',
         },
       },
     };

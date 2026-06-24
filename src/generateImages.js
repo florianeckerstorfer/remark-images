@@ -54,12 +54,16 @@ export async function generateImages({
 
   const sourceHash = manifest ? hashFile(path.join(srcDir, sourceFile)) : null;
 
+  const expectedFiles = images.map((i) => i.targetFile);
+
   if (manifest) {
     const entry = manifest.images?.[sourceFile];
     if (
       entry &&
       entry.sourceHash === sourceHash &&
-      entry.files.every((f) => fileExists(path.join(targetDir, f)))
+      Array.isArray(entry.files) &&
+      expectedFiles.every((f) => entry.files.includes(f)) &&
+      expectedFiles.every((f) => fileExists(path.join(targetDir, f)))
     ) {
       debug('Cache hit for "%s", skipping generation', sourceFile);
       return { count: 0, manifestEntry: null };
@@ -92,8 +96,6 @@ export async function generateImages({
   const results = await Promise.all(queue);
   return {
     count: results.filter((r) => r).length,
-    manifestEntry: manifest
-      ? { sourceHash, files: images.map((i) => i.targetFile) }
-      : null,
+    manifestEntry: manifest ? { sourceHash, files: expectedFiles } : null,
   };
 }
