@@ -4,6 +4,7 @@ import path from 'path';
 import probeImageSize from 'probe-image-size';
 import sharp from 'sharp';
 import { fileExists, isNewerFile } from './fileHelpers.js';
+import { hashFile } from './manifest.js';
 
 const debug = createDebug('RemarkResponsiveImages');
 
@@ -30,6 +31,7 @@ export async function generateImages({
   srcDir,
   targetDir,
   sourceFile,
+  manifest = null,
 }) {
   const addDirToFiles = (image) => ({
     width: image.width,
@@ -49,6 +51,24 @@ export async function generateImages({
       }
     });
   });
+
+  const sourceHash = manifest ? hashFile(path.join(srcDir, sourceFile)) : null;
+
+  const expectedFiles = images.map((i) => i.targetFile);
+
+  if (manifest) {
+    const entry = manifest.images?.[sourceFile];
+    if (
+      entry &&
+      entry.sourceHash === sourceHash &&
+      Array.isArray(entry.files) &&
+      expectedFiles.every((f) => entry.files.includes(f)) &&
+      expectedFiles.every((f) => fileExists(path.join(targetDir, f)))
+    ) {
+      debug('Cache hit for "%s", skipping generation', sourceFile);
+      return { count: 0, manifestEntry: null };
+    }
+  }
 
   const queue = images
     .map(addDirToFiles)
@@ -74,5 +94,8 @@ export async function generateImages({
     );
 
   const results = await Promise.all(queue);
-  return results.filter((r) => r).length;
+  return {
+    count: results.filter((r) => r).length,
+    manifestEntry: manifest ? { sourceHash, files: expectedFiles } : null,
+  };
 }

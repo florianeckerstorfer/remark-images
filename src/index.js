@@ -5,6 +5,7 @@ import { visitParents } from 'unist-util-visit-parents';
 import DEFAULT_OPTIONS from './DEFAULT_OPTIONS.js';
 import { fileExists, noTrailingSlash } from './fileHelpers.js';
 import { generateImages } from './generateImages.js';
+import { readManifest, writeManifest } from './manifest.js';
 import { findParentLinks } from './remarkHelpers.js';
 import { renderFigure } from './render.js';
 import { getSrcSets } from './srcSetHelpers.js';
@@ -40,6 +41,11 @@ function responsiveImages(pluginOptions) {
 
     debug('Found %d nodes to process', markdownImageNodes.length);
 
+    const manifestData = options.manifest
+      ? readManifest(path.resolve(options.manifest))
+      : null;
+    const manifestUpdates = {};
+
     const promises = markdownImageNodes
       .filter(({ node }) => fileExists(path.join(options.srcDir, node.url)))
       .map(({ node, inLink }) => {
@@ -59,7 +65,11 @@ function responsiveImages(pluginOptions) {
               srcDir: options.srcDir,
               sourceFile: node.url,
               targetDir: options.targetDir,
-            }).then((generatedImages) => {
+              manifest: manifestData,
+            }).then(({ count, manifestEntry }) => {
+              if (manifestEntry) {
+                manifestUpdates[node.url] = manifestEntry;
+              }
               const sourceFile = path.join(options.srcDir, node.url);
               sharp(sourceFile)
                 .resize(20, 20)
@@ -68,7 +78,7 @@ function responsiveImages(pluginOptions) {
                 .then(([bgImage, bgData]) => {
                   debug(
                     'Generated %d images for node %O',
-                    generatedImages,
+                    count,
                     node
                   );
                   resolve({ node, sources, inLink, bgImage, bgData });
@@ -95,6 +105,13 @@ function responsiveImages(pluginOptions) {
           hChildren: figure.children,
         };
       });
+
+      if (manifestData && Object.keys(manifestUpdates).length > 0) {
+        writeManifest(path.resolve(options.manifest), {
+          ...manifestData,
+          images: { ...manifestData.images, ...manifestUpdates },
+        });
+      }
     });
   }
 

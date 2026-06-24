@@ -81,6 +81,13 @@ const processor = remark().use([[images, options]]);
 | `blurredBackground`       | `true`                         | Add a blurred background while the image is loading                                       |
 | `processCaption`          | `(caption) => caption`         | Define a function to process image caption, eg. convert markdown to HTML                  |
 | `transformTargetFileName` | `(fileName, data) => fileName` | Define a function to transform the target file name                                       |
+| `manifest`                | `false`                        | Path to the manifest file used to skip regenerating unchanged images across builds. Disabled by default; set to a file path (e.g. `"remark-images-manifest.json"`) to enable. |
+
+#### Manifest-based image cache
+
+The plugin writes a JSON manifest file after generating images. On the next build, if the source image hash and all generated files on disk match the manifest entry, processing is skipped entirely for that image. This allows CI pipelines to cache the `targetDir` between runs and avoid regenerating unchanged images.
+
+Set `manifest: false` to disable this behaviour entirely.
 
 #### Process Caption
 

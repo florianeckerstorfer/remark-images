@@ -12,6 +12,7 @@ const DEFAULT_OPTIONS = {
   blurredBackground: true,
   processCaption: (caption) => caption,
   transformTargetFileName: (targetFile, data) => targetFile,
+  manifest: false,
 };
 
 export default DEFAULT_OPTIONS;
