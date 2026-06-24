@@ -128,6 +128,13 @@ This project is licensed under the [MIT License](LICENSE.md).
 
 ## Change log
 
+### Version 0.10.0 (June 24, 2026)
+
+> 🚨 This release introduces breaking changes
+
+- [#22](https://github.com/florianeckerstorfer/remark-images/pull/22) Update dependencies, increase minimum Node version, and require ESM
+- [#23](https://github.com/florianeckerstorfer/remark-images/pull/23) Add manifest option to allow caching
+
 ### Version 0.9.0 (November 13, 2023)
 
 - Update dependencies
