@@ -120,6 +120,10 @@ This project is licensed under the [MIT License](LICENSE.md).
 
 ## Change log
 
+### Version 0.9.1 (August 25, 2026)
+
+- Update sharp dependency to fix build issues
+
 ### Version 0.9.0 (November 13, 2023)
 
 - Update dependencies
