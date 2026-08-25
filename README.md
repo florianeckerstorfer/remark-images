@@ -148,7 +148,11 @@ This project is licensed under the [MIT License](LICENSE.md).
 
 ### Version 0.9.1 (August 25, 2026)
 
+Technically this is a breaking change since it now requires Node 20.x (instead of Node 16.x). However, v0.9.0 did not build on some Linux systems anymore. This version requires Node 20.x, but does include the upgrade to ESM.
+
 - Update sharp dependency to fix build issues
+- Update test matrix to Node 20.x, 22.x, and 24.x
+- Update minimum Node version to 20.x
 
 ### Version 0.9.0 (November 13, 2023)
 
